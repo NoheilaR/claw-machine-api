@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard - Claw Machine{% endblock %}
+
+{% block body %}
+    <h1>🎮 Dashboard Claw Machine</h1>
+
+    <section>
+        <h2>Réglages du jeu</h2>
+        <ul>
+            <li>Vitesse de la pince : {{ settings.clawSpeed }}</li>
+            <li>Durée limite : {{ settings.timeLimit }} secondes</li>
+            <li>Difficulté : {{ settings.difficulty }}</li>
+            <li>Taux d'apparition : {{ settings.itemSpawnRate }}</li>
+        </ul>
+{#        <a href="{{ path('settings_edit') }}">Modifier les réglages</a>#}
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>Statistiques globales</h2>
+        {% if stats %}
+            <ul>
+                <li>Nombre total de parties : {{ stats.totalGames }}</li>
+                <li>Durée moyenne : {{ stats.averageDuration }} sec</li>
+                <li>Meilleur score : {{ stats.highestScore }}</li>
+                <li>Dernière mise à jour : {{ stats.lastUpdated|date('d/m/Y H:i') }}</li>
+            </ul>
+        {% else %}
+            <p>Aucune statistique disponible.</p>
+        {% endif %}
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>🏆 Derniers scores</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Joueur</th>
+                <th>Score</th>
+                <th>Durée</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for score in scores %}
+                <tr>
+                    <td>{{ score.playerName }}</td>
+                    <td>{{ score.score }}</td>
+                    <td>{{ score.duration }} s</td>
+                    <td>{{ score.playedAt|date('d/m/Y H:i') }}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="4">Aucun score enregistré</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}
