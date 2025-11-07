@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+{% block title %}Scores — Claw Machine{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            min-height: 100vh;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 2em;
+            font-weight: 600;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #2a2a2a;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            color: #ffffff;
+            border-bottom: 1px solid #2a2a2a;
+            font-weight: 500;
+        }
+        tr:nth-child(even) {
+            background: #181818;
+        }
+        tr:hover {
+            background: #2a2a2a;
+        }
+        a.back {
+            display: inline-block;
+            margin: 30px 40px;
+            color: #aaa;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        a.back:hover {
+            color: #fff;
+        }
+    </style>
+
+    <a href="/" class="back">← Retour au Dashboard</a>
+    <h1>Classement des Scores</h1>
+
+    <div class="container">
+        <table>
+            <thead>
+            <tr>
+                <th>Joueur</th>
+                <th>Score</th>
+                <th>Durée</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for score in scores %}
+                <tr>
+                    <td>{{ score.playerName }}</td>
+                    <td><strong>{{ score.score }}</strong></td>
+                    <td>{{ score.duration }} s</td>
+                    <td>{{ score.playedAt ? score.playedAt|date('d/m/Y H:i') : '—' }}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="4">Aucun score pour le moment.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

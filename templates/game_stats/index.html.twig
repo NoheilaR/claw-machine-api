@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+{% block title %}Statistiques — Claw Machine{% endblock %}
+
+{% block body %}
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            min-height: 100vh;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 2em;
+            font-weight: 600;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 30px;
+            border: 1px solid #2a2a2a;
+        }
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        .label {
+            color: #bbb;
+        }
+        .value {
+            color: #fff;
+            font-weight: 500;
+        }
+        a.back {
+            display: inline-block;
+            margin: 30px 40px;
+            color: #aaa;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        a.back:hover {
+            color: #fff;
+        }
+    </style>
+
+    <a href="/" class="back">← Retour au Dashboard</a>
+    <h1>Statistiques Globales</h1>
+
+    <div class="container">
+        {% if stats %}
+            <div class="stat"><span class="label">Total de parties :</span><span class="value">{{ stats.totalGames }}</span></div>
+            <div class="stat"><span class="label">Durée moyenne :</span><span class="value">{{ stats.averageDuration }} s</span></div>
+            <div class="stat"><span class="label">Meilleur score :</span><span class="value">{{ stats.highestScore }}</span></div>
+            <div class="stat"><span class="label">Dernière mise à jour :</span><span class="value">{{ stats.lastUpdated ? stats.lastUpdated|date('d/m/Y H:i') : '—' }}</span></div>
+        {% else %}
+            <p style="text-align:center;">Aucune donnée disponible.</p>
+        {% endif %}
+    </div>
+{% endblock %}

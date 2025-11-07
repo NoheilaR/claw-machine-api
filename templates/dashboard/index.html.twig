@@ -1,62 +1,92 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Dashboard - Claw Machine{% endblock %}
+{% block title %}Dashboard — Claw Machine{% endblock %}
 
 {% block body %}
-    <h1>🎮 Dashboard Claw Machine</h1>
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-    <section>
-        <h2>Réglages du jeu</h2>
-        <ul>
-            <li>Vitesse de la pince : {{ settings.clawSpeed }}</li>
-            <li>Durée limite : {{ settings.timeLimit }} secondes</li>
-            <li>Difficulté : {{ settings.difficulty }}</li>
-            <li>Taux d'apparition : {{ settings.itemSpawnRate }}</li>
-        </ul>
-{#        <a href="{{ path('settings_edit') }}">Modifier les réglages</a>#}
-    </section>
+        h1 {
+            font-size: 2.2em;
+            font-weight: 600;
+            margin-bottom: 40px;
+            color: #ffffff;
+        }
 
-    <hr>
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            max-width: 800px;
+            width: 90%;
+        }
 
-    <section>
-        <h2>Statistiques globales</h2>
-        {% if stats %}
-            <ul>
-                <li>Nombre total de parties : {{ stats.totalGames }}</li>
-                <li>Durée moyenne : {{ stats.averageDuration }} sec</li>
-                <li>Meilleur score : {{ stats.highestScore }}</li>
-                <li>Dernière mise à jour : {{ stats.lastUpdated|date('d/m/Y H:i') }}</li>
-            </ul>
-        {% else %}
-            <p>Aucune statistique disponible.</p>
-        {% endif %}
-    </section>
+        .card {
+            background: #1e1e1e;
+            border-radius: 10px;
+            width: 240px;
+            height: 130px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            color: #e0e0e0;
+            border: 1px solid #2a2a2a;
+            transition: 0.2s ease;
+        }
 
-    <hr>
+        .card:hover {
+            background: #2a2a2a;
+            transform: translateY(-3px);
+        }
 
-    <section>
-        <h2>🏆 Derniers scores</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Joueur</th>
-                <th>Score</th>
-                <th>Durée</th>
-                <th>Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for score in scores %}
-                <tr>
-                    <td>{{ score.playerName }}</td>
-                    <td>{{ score.score }}</td>
-                    <td>{{ score.duration }} s</td>
-                    <td>{{ score.playedAt|date('d/m/Y H:i') }}</td>
-                </tr>
-            {% else %}
-                <tr><td colspan="4">Aucun score enregistré</td></tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </section>
+        .card h2 {
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            color: #ffffff;
+        }
+
+        .card p {
+            font-size: 0.9em;
+            color: #aaa;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.8em;
+            color: #555;
+        }
+    </style>
+
+    <h1>Claw Machine Dashboard</h1>
+
+    <div class="dashboard">
+        <a href="/scores" class="card">
+            <h2>Scores</h2>
+            <p>Voir le classement des joueurs</p>
+        </a>
+        <a href="/stats" class="card">
+            <h2>Statistiques</h2>
+            <p>Consulter les données globales</p>
+        </a>
+        <a href="/api" class="card">
+            <h2>API</h2>
+            <p>Interface API Platform</p>
+        </a>
+    </div>
+
+    <footer>© {{ "now"|date("Y") }} Claw Machine</footer>
 {% endblock %}

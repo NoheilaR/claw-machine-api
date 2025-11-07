@@ -13,13 +13,23 @@ class DashboardController extends AbstractController
 {
     #[Route('/dashboard', name: 'dashboard')]
     public function index(
-        ScoreRepository $scoreRepository,
-        GameStatsRepository $statsRepository,
+        ScoreRepository        $scoreRepository,
+        GameStatsRepository    $statsRepository,
         GameSettingsRepository $settingsRepository
-    ): Response {
+    ): Response
+    {
         $scores = $scoreRepository->findBy([], ['score' => 'DESC'], 10);
         $stats = $statsRepository->findOneBy(['id' => 1]);
         $settings = $settingsRepository->findOneBy(['id' => 1]);
+
+        if (!$settings) {
+            $settings = (object)[
+                'clawSpeed' => 'non défini',
+                'timeLimit' => 'non défini',
+                'difficulty' => 'non défini',
+                'itemSpawnRate' => 'non défini',
+            ];
+        }
 
         return $this->render('dashboard/index.html.twig', [
             'scores' => $scores,
@@ -28,3 +38,4 @@ class DashboardController extends AbstractController
         ]);
     }
 }
+
