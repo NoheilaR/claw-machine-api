@@ -63,10 +63,10 @@ class Score
 
     public function setDuration(float $duration): static
     {
-        $this->duration = $duration;
-
+        $this->duration = round($duration, 2);
         return $this;
     }
+
 
     public function getPlayedAt(): ?\DateTime
     {

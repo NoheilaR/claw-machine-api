@@ -24,7 +24,7 @@
 
         .dashboard {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             justify-content: center;
             gap: 25px;
             max-width: 800px;
@@ -86,7 +86,12 @@
             <h2>API</h2>
             <p>Interface API Platform</p>
         </a>
+        <a href="/settings" class="card">
+            <h2>Paramètres</h2>
+            <p>Modifier le temps, la difficulté...</p>
+        </a>
     </div>
+
 
     <footer>© {{ "now"|date("Y") }} Claw Machine</footer>
 {% endblock %}
