@@ -3,10 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\ScoreRepository;
+use App\State\ScoreProcessor;  // ← AJOUTER
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;  // ← AJOUTER
 
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Post(processor: ScoreProcessor::class)  // ← AJOUTER
+    ]
+)]
 #[ORM\Entity(repositoryClass: ScoreRepository::class)]
 class Score
 {
@@ -27,6 +33,7 @@ class Score
     #[ORM\Column]
     private ?\DateTime $playedAt = null;
 
+    // ... le reste du code reste identique
     public function getId(): ?int
     {
         return $this->id;
@@ -40,7 +47,6 @@ class Score
     public function setPlayerName(string $playerName): static
     {
         $this->playerName = $playerName;
-
         return $this;
     }
 
@@ -52,7 +58,6 @@ class Score
     public function setScore(int $score): static
     {
         $this->score = $score;
-
         return $this;
     }
 
@@ -67,7 +72,6 @@ class Score
         return $this;
     }
 
-
     public function getPlayedAt(): ?\DateTime
     {
         return $this->playedAt;
@@ -76,7 +80,6 @@ class Score
     public function setPlayedAt(\DateTime $playedAt): static
     {
         $this->playedAt = $playedAt;
-
         return $this;
     }
 }
