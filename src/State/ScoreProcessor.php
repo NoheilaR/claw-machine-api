@@ -96,9 +96,10 @@ class ScoreProcessor implements ProcessorInterface
             ]);
         }
 
-        // 5. Définir la date de jeu si non fournie
+        // 5. Définir la date de jeu si non fournie avec le fuseau horaire Europe/Paris
         if (!$data->getPlayedAt()) {
-            $data->setPlayedAt(new \DateTime());
+            $timezone = new \DateTimeZone('Europe/Paris');
+            $data->setPlayedAt(new \DateTime('now', $timezone));
         }
 
         // 6. Persister en base de données

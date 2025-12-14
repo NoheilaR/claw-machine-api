@@ -16,25 +16,47 @@ class GameSettingsType extends AbstractType
     {
         $builder
             ->add('clawSpeed', NumberType::class, [
-                'label' => 'Vitesse de la griffe',
-                'scale' => 2,
+                'label' => 'Vitesse de la pince',
+                'scale' => 1,
+                'attr' => [
+                    'min' => 1.0,
+                    'max' => 10.0,
+                    'step' => 0.5,
+                    'placeholder' => '5.0'
+                ],
+                'help' => 'Vitesse de déplacement de la pince (1.0 = lent, 10.0 = rapide)'
             ])
             ->add('timeLimit', NumberType::class, [
-                'label' => 'Temps initial (secondes)',
+                'label' => 'Temps limite (secondes)',
+                'attr' => [
+                    'min' => 30,
+                    'max' => 300,
+                    'step' => 10,
+                    'placeholder' => '60'
+                ],
+                'help' => 'Note : Le jeu utilise un système d\'énergie, ce paramètre est optionnel'
             ])
             ->add('difficulty', ChoiceType::class, [
                 'label' => 'Difficulté',
                 'choices' => [
-                    'Facile' => 'easy',
-                    'Moyen' => 'medium',
-                    'Difficile' => 'hard',
+                    'Facile - Idéal pour débutants' => 'Easy',
+                    'Moyen - Équilibré' => 'Medium',
+                    'Difficile - Pour experts' => 'Hard',
                 ],
+                'help' => 'Affecte la force de préhension de la pince'
             ])
             ->add('itemSpawnRate', NumberType::class, [
-                'label' => 'Taux de spawn des items',
-                'scale' => 2,
+                'label' => 'Fréquence d\'apparition des items',
+                'scale' => 1,
+                'attr' => [
+                    'min' => 0.5,
+                    'max' => 5.0,
+                    'step' => 0.5,
+                    'placeholder' => '2.5'
+                ],
+                'help' => 'Nombre d\'items apparaissant par seconde (0.5 = rare, 5.0 = fréquent)'
             ])
-            ->add('save', SubmitType::class, ['label' => 'Sauvegarder']);
+            ->add('save', SubmitType::class, ['label' => 'Sauvegarder les paramètres']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

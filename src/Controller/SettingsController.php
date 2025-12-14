@@ -24,10 +24,11 @@ final class SettingsController extends AbstractController
 
         if (!$settings) {
             $settings = new GameSettings();
-            $settings->setClawSpeed(1.0);
-            $settings->setTimeLimit(30);
-            $settings->setDifficulty('medium');
-            $settings->setItemSpawnRate(0.5);
+            // Valeurs par défaut cohérentes avec le jeu Unity
+            $settings->setClawSpeed(5.0);      // Vitesse de la pince (1.0 - 10.0)
+            $settings->setTimeLimit(60);        // Temps limite en secondes (pas utilisé avec le système d'énergie)
+            $settings->setDifficulty('Medium'); // Easy, Medium, Hard
+            $settings->setItemSpawnRate(2.5);   // Items par seconde (0.5 - 5.0)
             $em->persist($settings);
             $em->flush();
         }
