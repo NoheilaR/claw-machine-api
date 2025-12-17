@@ -1,5 +1,20 @@
 /* Futuristic Minimal Neon Theme */
 
+/* Custom Fonts */
+@font-face {
+    font-family: 'OCR-A';
+    src: url('../fonts/OCR-A.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'OVERLOAD';
+    src: url('../fonts/Excelorate.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 :root {
     /* Couleurs de base */
     --bg-black: #000000;
@@ -30,7 +45,7 @@
 }
 
 body {
-    font-family: 'Space Grotesk', 'Inter', sans-serif;
+    font-family: 'OCR-A', 'Courier New', monospace;
     background: var(--bg-black);
     color: var(--text-primary);
     min-height: 100vh;
@@ -170,6 +185,7 @@ body::after {
 
 /* Titres */
 h1 {
+    font-family: 'OCR-A', 'Courier New', monospace;
     font-size: 2.5em;
     font-weight: 700;
     color: var(--text-primary);
@@ -178,10 +194,16 @@ h1 {
 }
 
 h2 {
+    font-family: 'OCR-A', 'Courier New', monospace;
     font-size: 1.5em;
     font-weight: 600;
     color: var(--text-primary);
     margin-bottom: 10px;
+}
+
+/* Titre principal CLAW MACHINE en OVERLOAD */
+.title-overload {
+    font-family: 'OVERLOAD', 'Impact', sans-serif;
 }
 
 /* Cartes minimalistes */
