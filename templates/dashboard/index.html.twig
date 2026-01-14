@@ -424,13 +424,13 @@
         {# Actions rapides #}
         <h2 class="section-title" style="margin-bottom: 20px;">Actions rapides</h2>
         <div class="actions-grid">
-            <a href="/scores" class="action-card">
+            <a href="{{ path('app_scores') }}" class="action-card">
                 <div class="action-title">Scores</div>
                 <div class="action-desc">Voir le classement complet des meilleurs joueurs</div>
                 <div class="action-arrow">→</div>
             </a>
 
-            <a href="/stats" class="action-card">
+            <a href="{{ path('app_stats') }}" class="action-card">
                 <div class="action-title">Statistiques</div>
                 <div class="action-desc">Données globales et analytics du système</div>
                 <div class="action-arrow">→</div>
@@ -442,7 +442,7 @@
                 <div class="action-arrow">→</div>
             </a>
 
-            <a href="/settings" class="action-card">
+            <a href="{{ path('app_settings') }}" class="action-card">
                 <div class="action-title">Paramètres</div>
                 <div class="action-desc">Configuration et réglages du jeu</div>
                 <div class="action-arrow">→</div>
