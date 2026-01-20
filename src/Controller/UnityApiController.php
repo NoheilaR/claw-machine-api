@@ -43,10 +43,28 @@ class UnityApiController extends AbstractController
 
         return $this->json([
             'id' => $settings->getId(),
-            'clawSpeed' => $settings->getClawSpeed(),
             'timeLimit' => $settings->getTimeLimit(),
-            'difficulty' => $settings->getDifficulty(),
-            'itemSpawnRate' => $settings->getItemSpawnRate()
+            // Tokens - Energy
+            'energyTokenProbability' => $settings->getEnergyTokenProbability(),
+            'minEnergyTokens' => $settings->getMinEnergyTokens(),
+            'maxEnergyTokens' => $settings->getMaxEnergyTokens(),
+            // Tokens - Bomb
+            'bombTokenProbability' => $settings->getBombTokenProbability(),
+            'minBombTokens' => $settings->getMinBombTokens(),
+            'maxBombTokens' => $settings->getMaxBombTokens(),
+            // Tokens - Blackout
+            'blackoutTokenProbability' => $settings->getBlackoutTokenProbability(),
+            'minBlackoutTokens' => $settings->getMinBlackoutTokens(),
+            'maxBlackoutTokens' => $settings->getMaxBlackoutTokens(),
+            // Peluches - Quantites
+            'initialPlushieCount' => $settings->getInitialPlushieCount(),
+            'minPlushiesBeforeRespawn' => $settings->getMinPlushiesBeforeRespawn(),
+            'maxPlushiesInBin' => $settings->getMaxPlushiesInBin(),
+            'plushiesPerSpawn' => $settings->getPlushiesPerSpawn(),
+            // Peluches - Raretes
+            'commonProbability' => $settings->getCommonProbability(),
+            'rareProbability' => $settings->getRareProbability(),
+            'legendaryProbability' => $settings->getLegendaryProbability()
         ]);
     }
 
