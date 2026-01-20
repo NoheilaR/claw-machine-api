@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
-{% block title %}Paramètres — OVERLOAD{% endblock %}
+{% block title %}Parametres - OVERLOAD{% endblock %}
 
 {% block body %}
     <style>
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 40px 20px;
         }
@@ -65,20 +65,53 @@
         }
 
         .flash-message::before {
-            content: '✓';
+            content: 'V';
             font-size: 1.2em;
             font-weight: 700;
         }
 
+        .section-header {
+            margin: 32px 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .section-header:first-of-type {
+            margin-top: 0;
+        }
+
+        .section-header h3 {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--purple);
+            margin: 0 0 4px 0;
+        }
+
+        .section-desc {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
         .form-row {
-            margin-bottom: 28px;
+            margin-bottom: 0;
+        }
+
+        .form-row.full-width {
+            grid-column: 1 / -1;
         }
 
         .form-row label {
             display: block;
             margin-bottom: 8px;
             color: var(--text-primary);
-            font-size: 0.95em;
+            font-size: 0.85em;
             font-weight: 600;
         }
 
@@ -89,8 +122,8 @@
             border: 1px solid rgba(139, 92, 246, 0.2);
             border-radius: 8px;
             color: var(--text-primary);
-            padding: 12px 16px;
-            font-size: 1em;
+            padding: 10px 14px;
+            font-size: 0.95em;
             transition: all 0.3s ease;
         }
 
@@ -102,19 +135,19 @@
         }
 
         .help-text {
-            margin-top: 6px;
-            font-size: 0.85em;
+            margin-top: 4px;
+            font-size: 0.75em;
             color: var(--text-muted);
-            line-height: 1.4;
+            line-height: 1.3;
         }
 
         .current-value {
             display: inline-block;
             margin-left: 8px;
-            padding: 2px 8px;
+            padding: 2px 6px;
             background: rgba(139, 92, 246, 0.2);
             border-radius: 4px;
-            font-size: 0.85em;
+            font-size: 0.75em;
             color: var(--purple);
             font-weight: 600;
         }
@@ -130,7 +163,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
-            margin-top: 16px;
+            margin-top: 32px;
         }
 
         .submit-btn:hover {
@@ -138,43 +171,6 @@
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.2));
             box-shadow: var(--glow-purple);
             transform: translateY(-1px);
-        }
-
-        .presets {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 32px;
-            padding: 20px;
-            background: rgba(139, 92, 246, 0.05);
-            border-radius: 8px;
-            border: 1px solid rgba(139, 92, 246, 0.1);
-        }
-
-        .preset-card {
-            text-align: center;
-            padding: 16px 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .preset-card:hover {
-            border-color: var(--purple);
-            background: rgba(139, 92, 246, 0.1);
-        }
-
-        .preset-title {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
-
-        .preset-desc {
-            font-size: 0.8em;
-            color: var(--text-muted);
         }
 
         @media (max-width: 768px) {
@@ -186,7 +182,7 @@
                 padding: 24px;
             }
 
-            .presets {
+            .form-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -194,9 +190,9 @@
 
     <div class="container">
         <div class="page-header">
-            <a href="{{ path('dashboard') }}" class="back-button">← Retour</a>
-            <h1>Paramètres du jeu</h1>
-            <p>Configurez les réglages de gameplay</p>
+            <a href="{{ path('dashboard') }}" class="back-button">&larr; Retour</a>
+            <h1>Parametres du jeu</h1>
+            <p>Configurez les reglages de spawn des peluches et tokens</p>
         </div>
 
         <div class="settings-container">
@@ -204,49 +200,156 @@
                 <div class="flash-message">{{ message }}</div>
             {% endfor %}
 
-            <div class="presets">
-                <div class="preset-card" onclick="applyPreset('easy')">
-                    <div class="preset-title">Facile</div>
-                    <div class="preset-desc">Pour débutants</div>
-                </div>
-                <div class="preset-card" onclick="applyPreset('medium')">
-                    <div class="preset-title">Moyen</div>
-                    <div class="preset-desc">Équilibré</div>
-                </div>
-                <div class="preset-card" onclick="applyPreset('hard')">
-                    <div class="preset-title">Difficile</div>
-                    <div class="preset-desc">Pour experts</div>
-                </div>
-            </div>
-
             {{ form_start(form) }}
 
-            <div class="form-row">
-                {{ form_label(form.clawSpeed) }}
-                <span class="current-value">Actuel: {{ settings.clawSpeed }}</span>
-                {{ form_widget(form.clawSpeed) }}
-                {{ form_help(form.clawSpeed) }}
+            {# ===== GENERAL ===== #}
+            <div class="section-header">
+                <h3>General</h3>
+                <p class="section-desc">Parametres globaux de la partie</p>
+            </div>
+            <div class="form-grid">
+                <div class="form-row">
+                    {{ form_label(form.timeLimit) }}
+                    <span class="current-value">{{ settings.timeLimit }}s</span>
+                    {{ form_widget(form.timeLimit) }}
+                    {{ form_help(form.timeLimit) }}
+                </div>
             </div>
 
-            <div class="form-row">
-                {{ form_label(form.timeLimit) }}
-                <span class="current-value">Actuel: {{ settings.timeLimit }}s</span>
-                {{ form_widget(form.timeLimit) }}
-                {{ form_help(form.timeLimit) }}
+            {# ===== TOKENS - ENERGY ===== #}
+            <div class="section-header">
+                <h3>Energy Tokens</h3>
+                <p class="section-desc">Jetons qui rechargent la jauge d'energie du joueur</p>
+            </div>
+            <div class="form-grid">
+                <div class="form-row">
+                    {{ form_label(form.energyTokenProbability) }}
+                    <span class="current-value">{{ settings.energyTokenProbability }}%</span>
+                    {{ form_widget(form.energyTokenProbability) }}
+                    {{ form_help(form.energyTokenProbability) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.minEnergyTokens) }}
+                    <span class="current-value">{{ settings.minEnergyTokens }}</span>
+                    {{ form_widget(form.minEnergyTokens) }}
+                    {{ form_help(form.minEnergyTokens) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.maxEnergyTokens) }}
+                    <span class="current-value">{{ settings.maxEnergyTokens }}</span>
+                    {{ form_widget(form.maxEnergyTokens) }}
+                    {{ form_help(form.maxEnergyTokens) }}
+                </div>
             </div>
 
-            <div class="form-row">
-                {{ form_label(form.difficulty) }}
-                <span class="current-value">Actuel: {{ settings.difficulty }}</span>
-                {{ form_widget(form.difficulty) }}
-                {{ form_help(form.difficulty) }}
+            {# ===== TOKENS - BOMB ===== #}
+            <div class="section-header">
+                <h3>Bomb Tokens</h3>
+                <p class="section-desc">Jetons explosifs qui detruisent les peluches autour</p>
+            </div>
+            <div class="form-grid">
+                <div class="form-row">
+                    {{ form_label(form.bombTokenProbability) }}
+                    <span class="current-value">{{ settings.bombTokenProbability }}%</span>
+                    {{ form_widget(form.bombTokenProbability) }}
+                    {{ form_help(form.bombTokenProbability) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.minBombTokens) }}
+                    <span class="current-value">{{ settings.minBombTokens }}</span>
+                    {{ form_widget(form.minBombTokens) }}
+                    {{ form_help(form.minBombTokens) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.maxBombTokens) }}
+                    <span class="current-value">{{ settings.maxBombTokens }}</span>
+                    {{ form_widget(form.maxBombTokens) }}
+                    {{ form_help(form.maxBombTokens) }}
+                </div>
             </div>
 
-            <div class="form-row">
-                {{ form_label(form.itemSpawnRate) }}
-                <span class="current-value">Actuel: {{ settings.itemSpawnRate }}</span>
-                {{ form_widget(form.itemSpawnRate) }}
-                {{ form_help(form.itemSpawnRate) }}
+            {# ===== TOKENS - BLACKOUT ===== #}
+            <div class="section-header">
+                <h3>Blackout Tokens</h3>
+                <p class="section-desc">Jetons qui activent le mode blackout (multiplicateur de points x2)</p>
+            </div>
+            <div class="form-grid">
+                <div class="form-row">
+                    {{ form_label(form.blackoutTokenProbability) }}
+                    <span class="current-value">{{ settings.blackoutTokenProbability }}%</span>
+                    {{ form_widget(form.blackoutTokenProbability) }}
+                    {{ form_help(form.blackoutTokenProbability) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.minBlackoutTokens) }}
+                    <span class="current-value">{{ settings.minBlackoutTokens }}</span>
+                    {{ form_widget(form.minBlackoutTokens) }}
+                    {{ form_help(form.minBlackoutTokens) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.maxBlackoutTokens) }}
+                    <span class="current-value">{{ settings.maxBlackoutTokens }}</span>
+                    {{ form_widget(form.maxBlackoutTokens) }}
+                    {{ form_help(form.maxBlackoutTokens) }}
+                </div>
+            </div>
+
+            {# ===== PELUCHES - QUANTITES ===== #}
+            <div class="section-header">
+                <h3>Peluches - Quantites</h3>
+                <p class="section-desc">Controle le nombre de peluches dans le bac et le respawn</p>
+            </div>
+            <div class="form-grid">
+                <div class="form-row">
+                    {{ form_label(form.initialPlushieCount) }}
+                    <span class="current-value">{{ settings.initialPlushieCount }}</span>
+                    {{ form_widget(form.initialPlushieCount) }}
+                    {{ form_help(form.initialPlushieCount) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.minPlushiesBeforeRespawn) }}
+                    <span class="current-value">{{ settings.minPlushiesBeforeRespawn }}</span>
+                    {{ form_widget(form.minPlushiesBeforeRespawn) }}
+                    {{ form_help(form.minPlushiesBeforeRespawn) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.maxPlushiesInBin) }}
+                    <span class="current-value">{{ settings.maxPlushiesInBin }}</span>
+                    {{ form_widget(form.maxPlushiesInBin) }}
+                    {{ form_help(form.maxPlushiesInBin) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.plushiesPerSpawn) }}
+                    <span class="current-value">{{ settings.plushiesPerSpawn }}</span>
+                    {{ form_widget(form.plushiesPerSpawn) }}
+                    {{ form_help(form.plushiesPerSpawn) }}
+                </div>
+            </div>
+
+            {# ===== PELUCHES - RARETES ===== #}
+            <div class="section-header">
+                <h3>Peluches - Raretes</h3>
+                <p class="section-desc">Probabilites d'apparition selon la rarete (le total doit faire 100%)</p>
+            </div>
+            <div class="form-grid">
+                <div class="form-row">
+                    {{ form_label(form.commonProbability) }}
+                    <span class="current-value">{{ settings.commonProbability }}%</span>
+                    {{ form_widget(form.commonProbability) }}
+                    {{ form_help(form.commonProbability) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.rareProbability) }}
+                    <span class="current-value">{{ settings.rareProbability }}%</span>
+                    {{ form_widget(form.rareProbability) }}
+                    {{ form_help(form.rareProbability) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.legendaryProbability) }}
+                    <span class="current-value">{{ settings.legendaryProbability }}%</span>
+                    {{ form_widget(form.legendaryProbability) }}
+                    {{ form_help(form.legendaryProbability) }}
+                </div>
             </div>
 
             {{ form_widget(form.save, {'attr': {'class': 'submit-btn'}}) }}
@@ -254,52 +357,4 @@
             {{ form_end(form) }}
         </div>
     </div>
-
-    <script>
-        function applyPreset(preset) {
-            const clawSpeedInput = document.querySelector('#game_settings_clawSpeed');
-            const timeLimitInput = document.querySelector('#game_settings_timeLimit');
-            const difficultySelect = document.querySelector('#game_settings_difficulty');
-            const itemSpawnRateInput = document.querySelector('#game_settings_itemSpawnRate');
-
-            const presets = {
-                easy: {
-                    clawSpeed: 7.0,
-                    timeLimit: 90,
-                    difficulty: 'Easy',
-                    itemSpawnRate: 4.0
-                },
-                medium: {
-                    clawSpeed: 5.0,
-                    timeLimit: 60,
-                    difficulty: 'Medium',
-                    itemSpawnRate: 2.5
-                },
-                hard: {
-                    clawSpeed: 3.0,
-                    timeLimit: 45,
-                    difficulty: 'Hard',
-                    itemSpawnRate: 1.5
-                }
-            };
-
-            const config = presets[preset];
-            if (config) {
-                clawSpeedInput.value = config.clawSpeed;
-                timeLimitInput.value = config.timeLimit;
-                difficultySelect.value = config.difficulty;
-                itemSpawnRateInput.value = config.itemSpawnRate;
-
-                // Animation flash
-                [clawSpeedInput, timeLimitInput, difficultySelect, itemSpawnRateInput].forEach(input => {
-                    input.style.borderColor = 'var(--purple)';
-                    input.style.boxShadow = 'var(--glow-purple)';
-                    setTimeout(() => {
-                        input.style.borderColor = '';
-                        input.style.boxShadow = '';
-                    }, 500);
-                });
-            }
-        }
-    </script>
 {% endblock %}

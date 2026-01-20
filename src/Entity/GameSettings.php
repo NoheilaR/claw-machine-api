@@ -17,32 +17,66 @@ class GameSettings
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?float $clawSpeed = null;
-
-    #[ORM\Column]
     private ?int $timeLimit = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $difficulty = null;
+    // ===== TOKENS - ENERGY =====
+    #[ORM\Column]
+    private float $energyTokenProbability = 10.0;
 
     #[ORM\Column]
-    private ?float $itemSpawnRate = null;
+    private int $minEnergyTokens = 1;
+
+    #[ORM\Column]
+    private int $maxEnergyTokens = 3;
+
+    // ===== TOKENS - BOMB =====
+    #[ORM\Column]
+    private float $bombTokenProbability = 5.0;
+
+    #[ORM\Column]
+    private int $minBombTokens = 0;
+
+    #[ORM\Column]
+    private int $maxBombTokens = 2;
+
+    // ===== TOKENS - BLACKOUT =====
+    #[ORM\Column]
+    private float $blackoutTokenProbability = 3.0;
+
+    #[ORM\Column]
+    private int $minBlackoutTokens = 0;
+
+    #[ORM\Column]
+    private int $maxBlackoutTokens = 1;
+
+    // ===== PELUCHES - QUANTITÉS =====
+    #[ORM\Column]
+    private int $initialPlushieCount = 15;
+
+    #[ORM\Column]
+    private int $minPlushiesBeforeRespawn = 3;
+
+    #[ORM\Column]
+    private int $maxPlushiesInBin = 20;
+
+    #[ORM\Column]
+    private int $plushiesPerSpawn = 8;
+
+    // ===== PELUCHES - RARETÉS =====
+    #[ORM\Column]
+    private float $commonProbability = 70.0;
+
+    #[ORM\Column]
+    private float $rareProbability = 25.0;
+
+    #[ORM\Column]
+    private float $legendaryProbability = 5.0;
+
+    // ===== GETTERS & SETTERS =====
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getClawSpeed(): ?float
-    {
-        return $this->clawSpeed;
-    }
-
-    public function setClawSpeed(float $clawSpeed): static
-    {
-        $this->clawSpeed = $clawSpeed;
-
-        return $this;
     }
 
     public function getTimeLimit(): ?int
@@ -53,31 +87,187 @@ class GameSettings
     public function setTimeLimit(int $timeLimit): static
     {
         $this->timeLimit = $timeLimit;
-
         return $this;
     }
 
-    public function getDifficulty(): ?string
+    // --- Energy Tokens ---
+    public function getEnergyTokenProbability(): float
     {
-        return $this->difficulty;
+        return $this->energyTokenProbability;
     }
 
-    public function setDifficulty(string $difficulty): static
+    public function setEnergyTokenProbability(float $energyTokenProbability): static
     {
-        $this->difficulty = $difficulty;
-
+        $this->energyTokenProbability = $energyTokenProbability;
         return $this;
     }
 
-    public function getItemSpawnRate(): ?float
+    public function getMinEnergyTokens(): int
     {
-        return $this->itemSpawnRate;
+        return $this->minEnergyTokens;
     }
 
-    public function setItemSpawnRate(float $itemSpawnRate): static
+    public function setMinEnergyTokens(int $minEnergyTokens): static
     {
-        $this->itemSpawnRate = $itemSpawnRate;
+        $this->minEnergyTokens = $minEnergyTokens;
+        return $this;
+    }
 
+    public function getMaxEnergyTokens(): int
+    {
+        return $this->maxEnergyTokens;
+    }
+
+    public function setMaxEnergyTokens(int $maxEnergyTokens): static
+    {
+        $this->maxEnergyTokens = $maxEnergyTokens;
+        return $this;
+    }
+
+    // --- Bomb Tokens ---
+    public function getBombTokenProbability(): float
+    {
+        return $this->bombTokenProbability;
+    }
+
+    public function setBombTokenProbability(float $bombTokenProbability): static
+    {
+        $this->bombTokenProbability = $bombTokenProbability;
+        return $this;
+    }
+
+    public function getMinBombTokens(): int
+    {
+        return $this->minBombTokens;
+    }
+
+    public function setMinBombTokens(int $minBombTokens): static
+    {
+        $this->minBombTokens = $minBombTokens;
+        return $this;
+    }
+
+    public function getMaxBombTokens(): int
+    {
+        return $this->maxBombTokens;
+    }
+
+    public function setMaxBombTokens(int $maxBombTokens): static
+    {
+        $this->maxBombTokens = $maxBombTokens;
+        return $this;
+    }
+
+    // --- Blackout Tokens ---
+    public function getBlackoutTokenProbability(): float
+    {
+        return $this->blackoutTokenProbability;
+    }
+
+    public function setBlackoutTokenProbability(float $blackoutTokenProbability): static
+    {
+        $this->blackoutTokenProbability = $blackoutTokenProbability;
+        return $this;
+    }
+
+    public function getMinBlackoutTokens(): int
+    {
+        return $this->minBlackoutTokens;
+    }
+
+    public function setMinBlackoutTokens(int $minBlackoutTokens): static
+    {
+        $this->minBlackoutTokens = $minBlackoutTokens;
+        return $this;
+    }
+
+    public function getMaxBlackoutTokens(): int
+    {
+        return $this->maxBlackoutTokens;
+    }
+
+    public function setMaxBlackoutTokens(int $maxBlackoutTokens): static
+    {
+        $this->maxBlackoutTokens = $maxBlackoutTokens;
+        return $this;
+    }
+
+    // --- Plushies Quantities ---
+    public function getInitialPlushieCount(): int
+    {
+        return $this->initialPlushieCount;
+    }
+
+    public function setInitialPlushieCount(int $initialPlushieCount): static
+    {
+        $this->initialPlushieCount = $initialPlushieCount;
+        return $this;
+    }
+
+    public function getMinPlushiesBeforeRespawn(): int
+    {
+        return $this->minPlushiesBeforeRespawn;
+    }
+
+    public function setMinPlushiesBeforeRespawn(int $minPlushiesBeforeRespawn): static
+    {
+        $this->minPlushiesBeforeRespawn = $minPlushiesBeforeRespawn;
+        return $this;
+    }
+
+    public function getMaxPlushiesInBin(): int
+    {
+        return $this->maxPlushiesInBin;
+    }
+
+    public function setMaxPlushiesInBin(int $maxPlushiesInBin): static
+    {
+        $this->maxPlushiesInBin = $maxPlushiesInBin;
+        return $this;
+    }
+
+    public function getPlushiesPerSpawn(): int
+    {
+        return $this->plushiesPerSpawn;
+    }
+
+    public function setPlushiesPerSpawn(int $plushiesPerSpawn): static
+    {
+        $this->plushiesPerSpawn = $plushiesPerSpawn;
+        return $this;
+    }
+
+    // --- Plushies Rarities ---
+    public function getCommonProbability(): float
+    {
+        return $this->commonProbability;
+    }
+
+    public function setCommonProbability(float $commonProbability): static
+    {
+        $this->commonProbability = $commonProbability;
+        return $this;
+    }
+
+    public function getRareProbability(): float
+    {
+        return $this->rareProbability;
+    }
+
+    public function setRareProbability(float $rareProbability): static
+    {
+        $this->rareProbability = $rareProbability;
+        return $this;
+    }
+
+    public function getLegendaryProbability(): float
+    {
+        return $this->legendaryProbability;
+    }
+
+    public function setLegendaryProbability(float $legendaryProbability): static
+    {
+        $this->legendaryProbability = $legendaryProbability;
         return $this;
     }
 }
