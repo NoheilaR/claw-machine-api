@@ -72,6 +72,16 @@ class GameSettings
     #[ORM\Column]
     private float $legendaryProbability = 5.0;
 
+    // ===== PERTURBATION COMMANDES (GLITCH) =====
+    #[ORM\Column]
+    private float $glitchProbability = 60.0;
+
+    #[ORM\Column]
+    private float $glitchEnergyThreshold = 20.0;
+
+    #[ORM\Column]
+    private float $glitchChangeInterval = 3.0;
+
     // ===== GETTERS & SETTERS =====
 
     public function getId(): ?int
@@ -268,6 +278,40 @@ class GameSettings
     public function setLegendaryProbability(float $legendaryProbability): static
     {
         $this->legendaryProbability = $legendaryProbability;
+        return $this;
+    }
+
+    // --- Glitch (Perturbation Commandes) ---
+    public function getGlitchProbability(): float
+    {
+        return $this->glitchProbability;
+    }
+
+    public function setGlitchProbability(float $glitchProbability): static
+    {
+        $this->glitchProbability = $glitchProbability;
+        return $this;
+    }
+
+    public function getGlitchEnergyThreshold(): float
+    {
+        return $this->glitchEnergyThreshold;
+    }
+
+    public function setGlitchEnergyThreshold(float $glitchEnergyThreshold): static
+    {
+        $this->glitchEnergyThreshold = $glitchEnergyThreshold;
+        return $this;
+    }
+
+    public function getGlitchChangeInterval(): float
+    {
+        return $this->glitchChangeInterval;
+    }
+
+    public function setGlitchChangeInterval(float $glitchChangeInterval): static
+    {
+        $this->glitchChangeInterval = $glitchChangeInterval;
         return $this;
     }
 }

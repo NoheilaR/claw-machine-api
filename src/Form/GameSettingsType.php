@@ -138,6 +138,26 @@ class GameSettingsType extends AbstractType
                 'help' => 'Probabilité peluche légendaire'
             ])
 
+            // ===== PERTURBATION COMMANDES (GLITCH) =====
+            ->add('glitchProbability', NumberType::class, [
+                'label' => 'Probabilité inversion commandes (%)',
+                'scale' => 1,
+                'attr' => ['min' => 0, 'max' => 100, 'step' => 5],
+                'help' => 'Probabilité que les commandes s\'inversent quand l\'énergie est basse (0-100%)'
+            ])
+            ->add('glitchEnergyThreshold', NumberType::class, [
+                'label' => 'Seuil énergie pour glitch (%)',
+                'scale' => 1,
+                'attr' => ['min' => 0, 'max' => 50, 'step' => 5],
+                'help' => 'Seuil d\'énergie en dessous duquel le glitch peut s\'activer (0-50%)'
+            ])
+            ->add('glitchChangeInterval', NumberType::class, [
+                'label' => 'Intervalle changement glitch (s)',
+                'scale' => 1,
+                'attr' => ['min' => 1, 'max' => 10, 'step' => 0.5],
+                'help' => 'Intervalle en secondes entre chaque changement d\'état du glitch'
+            ])
+
             ->add('save', SubmitType::class, ['label' => 'Sauvegarder les paramètres']);
     }
 
