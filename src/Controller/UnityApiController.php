@@ -160,28 +160,28 @@ class UnityApiController extends AbstractController
             }
 
             // Valider le hash (en production uniquement)
-            $devMode = $_ENV['APP_ENV'] === 'dev';
-            if ($dto->hash && !$devMode) {
-                $isValid = $this->scoreValidator->validateHash(
-                    $sanitizedName,
-                    $dto->score,
-                    $dto->duration,
-                    $dto->hash
-                );
+           // $devMode = $_ENV['APP_ENV'] === 'dev';
+       //     if ($dto->hash && !$devMode) {
+               // $isValid = $this->scoreValidator->validateHash(
+                   // $sanitizedName,
+                   // $dto->score,
+                   // $dto->duration,
+                 //   $dto->hash
+               // );
 
-                if (!$isValid) {
-                    $this->logger->error('Invalid hash detected', [
-                        'playerName' => $sanitizedName,
-                        'score' => $dto->score,
-                        'ip' => $request->getClientIp()
-                    ]);
+               // if (!$isValid) {
+                    //$this->logger->error('Invalid hash detected', [
+                        //'playerName' => $sanitizedName,
+                       // 'score' => $dto->score,
+                     //   'ip' => $request->getClientIp()
+                   // ]);
 
-                    return $this->json([
-                        'error' => 'Invalid hash',
-                        'message' => 'Le hash de sécurité est invalide'
-                    ], Response::HTTP_UNAUTHORIZED);
-                }
-            }
+                   // return $this->json([
+                   //     'error' => 'Invalid hash',
+                 //       'message' => 'Le hash de sécurité est invalide'
+               //     ], Response::HTTP_UNAUTHORIZED);
+             //   }
+           // }
 
             // Créer l'entité Score
             $score = new Score();
