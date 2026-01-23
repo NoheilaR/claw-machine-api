@@ -29,7 +29,7 @@ class UnityApiController extends AbstractController
      * Récupérer les paramètres du jeu
      * GET /api/unity/settings/{id}
      */
-    #[Route('/settings/{id}', name: 'get_settings', methods: ['GET'])]
+    #[Route('/settings/{id}', name: 'get_settings', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function getSettings(int $id): JsonResponse
     {
         $settings = $this->entityManager->getRepository(GameSettings::class)->find($id);
