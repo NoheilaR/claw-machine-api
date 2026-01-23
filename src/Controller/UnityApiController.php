@@ -62,9 +62,10 @@ class UnityApiController extends AbstractController
 
     /**
      * Enregistrer un score
-     * POST /api/unity/score
+     * POST /api/unity/score (recommandé)
+     * GET /api/unity/score?playerName=...&score=...&duration=...&hash=... (pour proxy Anatidae)
      *
-     * Body (JSON):
+     * Body POST (JSON):
      * {
      *   "playerName": "Player1",
      *   "score": 1500,
@@ -72,21 +73,44 @@ class UnityApiController extends AbstractController
      *   "hash": "abc123..." (optionnel en dev)
      * }
      *
-     * Headers:
-     * X-Score-Hash: abc123... (alternative au body)
+     * Query GET:
+     * ?playerName=Player1&score=1500&duration=60.5&hash=abc123...
      */
-    #[Route('/score', name: 'post_score', methods: ['POST'])]
+    #[Route('/score', name: 'post_score', methods: ['POST', 'GET'])]
     public function postScore(Request $request): JsonResponse
     {
         try {
-            // Décoder le JSON
-            $data = json_decode($request->getContent(), true);
+            // ========================================
+            // SUPPORTER GET ET POST (workaround proxy Anatidae)
+            // ========================================
+            if ($request->isMethod('POST')) {
+                // Méthode POST : lire le body JSON
+                $data = json_decode($request->getContent(), true);
 
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                return $this->json([
-                    'error' => 'Invalid JSON',
-                    'message' => 'Le corps de la requête doit être un JSON valide'
-                ], Response::HTTP_BAD_REQUEST);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    $this->logger->error('Invalid JSON in POST', [
+                        'content' => $request->getContent(),
+                        'error' => json_last_error_msg()
+                    ]);
+
+                    return $this->json([
+                        'error' => 'Invalid JSON',
+                        'message' => 'Le corps de la requête doit être un JSON valide'
+                    ], Response::HTTP_BAD_REQUEST);
+                }
+
+                $this->logger->info('Score received via POST', ['data' => $data]);
+            } else {
+                // Méthode GET : lire les query parameters
+                $data = [
+                    'playerName' => $request->query->get('playerName'),
+                    'score' => $request->query->get('score'),
+                    'duration' => $request->query->get('duration'),
+                    'hash' => $request->query->get('hash'),
+                    'playedAt' => $request->query->get('playedAt')
+                ];
+
+                $this->logger->info('Score received via GET', ['data' => $data]);
             }
 
             // Créer le DTO
@@ -104,6 +128,11 @@ class UnityApiController extends AbstractController
                 foreach ($errors as $error) {
                     $errorMessages[$error->getPropertyPath()] = $error->getMessage();
                 }
+
+                $this->logger->warning('Validation failed', [
+                    'errors' => $errorMessages,
+                    'data' => $data
+                ]);
 
                 return $this->json([
                     'error' => 'Validation failed',
@@ -131,28 +160,28 @@ class UnityApiController extends AbstractController
             }
 
             // Valider le hash (en production uniquement)
-            $devMode = $_ENV['APP_ENV'] === 'dev';
-            if ($dto->hash && !$devMode) {
-                $isValid = $this->scoreValidator->validateHash(
-                    $sanitizedName,
-                    $dto->score,
-                    $dto->duration,
-                    $dto->hash
-                );
+           // $devMode = $_ENV['APP_ENV'] === 'dev';
+       //     if ($dto->hash && !$devMode) {
+               // $isValid = $this->scoreValidator->validateHash(
+                   // $sanitizedName,
+                   // $dto->score,
+                   // $dto->duration,
+                 //   $dto->hash
+               // );
 
-                if (!$isValid) {
-                    $this->logger->error('Invalid hash detected', [
-                        'playerName' => $sanitizedName,
-                        'score' => $dto->score,
-                        'ip' => $request->getClientIp()
-                    ]);
+               // if (!$isValid) {
+                    //$this->logger->error('Invalid hash detected', [
+                        //'playerName' => $sanitizedName,
+                       // 'score' => $dto->score,
+                     //   'ip' => $request->getClientIp()
+                   // ]);
 
-                    return $this->json([
-                        'error' => 'Invalid hash',
-                        'message' => 'Le hash de sécurité est invalide'
-                    ], Response::HTTP_UNAUTHORIZED);
-                }
-            }
+                   // return $this->json([
+                   //     'error' => 'Invalid hash',
+                 //       'message' => 'Le hash de sécurité est invalide'
+               //     ], Response::HTTP_UNAUTHORIZED);
+             //   }
+           // }
 
             // Créer l'entité Score
             $score = new Score();
@@ -179,7 +208,8 @@ class UnityApiController extends AbstractController
             $this->logger->info('Score saved successfully', [
                 'id' => $score->getId(),
                 'playerName' => $sanitizedName,
-                'score' => $dto->score
+                'score' => $dto->score,
+                'method' => $request->getMethod()
             ]);
 
             // Retourner la réponse

@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Claw Machine - Dashboard{% endblock %}
+{% block title %}OVERLOAD - Dashboard{% endblock %}
 
 {% block body %}
     <style>
@@ -329,7 +329,7 @@
 
     <div class="container">
         <div class="dashboard-header">
-            <h1 class="title-overload">CLAW MACHINE</h1>
+            <h1 class="title-overload">OVERLOAD</h1>
             <p>Tableau de bord et gestion du système</p>
         </div>
 
@@ -424,13 +424,13 @@
         {# Actions rapides #}
         <h2 class="section-title" style="margin-bottom: 20px;">Actions rapides</h2>
         <div class="actions-grid">
-            <a href="/scores" class="action-card">
+            <a href="{{ path('app_scores') }}" class="action-card">
                 <div class="action-title">Scores</div>
                 <div class="action-desc">Voir le classement complet des meilleurs joueurs</div>
                 <div class="action-arrow">→</div>
             </a>
 
-            <a href="/stats" class="action-card">
+            <a href="{{ path('app_stats') }}" class="action-card">
                 <div class="action-title">Statistiques</div>
                 <div class="action-desc">Données globales et analytics du système</div>
                 <div class="action-arrow">→</div>
@@ -442,7 +442,7 @@
                 <div class="action-arrow">→</div>
             </a>
 
-            <a href="/settings" class="action-card">
+            <a href="{{ path('app_settings') }}" class="action-card">
                 <div class="action-title">Paramètres</div>
                 <div class="action-desc">Configuration et réglages du jeu</div>
                 <div class="action-arrow">→</div>
@@ -450,7 +450,7 @@
         </div>
 
         <footer style="text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 0.85em;">
-            © {{ "now"|date("Y") }} Claw Machine
+            © {{ "now"|date("Y") }} OVERLOAD
         </footer>
     </div>
 {% endblock %}
