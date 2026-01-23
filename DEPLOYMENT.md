@@ -15,13 +15,13 @@ Ce guide explique comment déployer l'API Claw Machine sur le VPS avec CI/CD aut
 ### 1.1 Connexion SSH au VPS
 
 ```bash
-ssh mmi23c14@45.155.171.55
+ssh mmi23c07@45.155.171.55
 ```
 
 ### 1.2 Cloner le repository (première fois uniquement)
 
 ```bash
-cd /home/mmi23c14/public_html/
+cd /home/mmi23c07/public_html/
 git clone https://github.com/VOTRE_USERNAME/claw-machine-api.git overload-back
 cd overload-back
 git checkout production
@@ -30,7 +30,7 @@ git checkout production
 ### 1.3 Créer le fichier .env.local avec les vraies valeurs
 
 ```bash
-cd /home/mmi23c14/public_html/overload-back
+cd /home/mmi23c07/public_html/overload-back
 nano .env.local
 ```
 
@@ -57,7 +57,7 @@ chmod +x deploy.sh
 server {
     listen 80;
     server_name votre-domaine.com;
-    root /home/mmi23c14/public_html/overload-back/public;
+    root /home/mmi23c07/public_html/overload-back/public;
 
     location / {
         try_files $uri /index.php$is_args$args;
@@ -106,7 +106,7 @@ cat ~/.ssh/github_deploy.pub
 Copier le contenu, puis sur le VPS :
 
 ```bash
-ssh mmi23c14@45.155.171.55
+ssh mmi23c07@45.155.171.55
 nano ~/.ssh/authorized_keys
 # Coller la clé publique sur une nouvelle ligne
 ```
@@ -120,7 +120,7 @@ nano ~/.ssh/authorized_keys
 | Nom | Valeur |
 |-----|--------|
 | `VPS_HOST` | `45.155.171.55` |
-| `VPS_USER` | `mmi23c14` |
+| `VPS_USER` | `mmi23c07` |
 | `VPS_SSH_KEY` | Contenu de `~/.ssh/github_deploy` (la clé PRIVÉE) |
 
 Pour obtenir la clé privée :
@@ -182,24 +182,24 @@ git push origin production  # 🚀 Déploiement automatique !
 ### Déploiement manuel (si besoin)
 
 ```bash
-ssh mmi23c14@45.155.171.55
-cd /home/mmi23c14/public_html/overload-back
+ssh mmi23c07@45.155.171.55
+cd /home/mmi23c07/public_html/overload-back
 bash deploy.sh
 ```
 
 ### Voir les logs
 
 ```bash
-ssh mmi23c14@45.155.171.55
-cd /home/mmi23c14/public_html/overload-back
+ssh mmi23c07@45.155.171.55
+cd /home/mmi23c07/public_html/overload-back
 tail -f var/log/prod.log
 ```
 
 ### Rollback en cas de problème
 
 ```bash
-ssh mmi23c14@45.155.171.55
-cd /home/mmi23c14/public_html/overload-back
+ssh mmi23c07@45.155.171.55
+cd /home/mmi23c07/public_html/overload-back
 git log --oneline -10  # Voir les derniers commits
 git reset --hard COMMIT_HASH  # Revenir à un commit précédent
 bash deploy.sh
@@ -216,22 +216,22 @@ bash deploy.sh
 
 ### Erreur de permissions
 ```bash
-ssh mmi23c14@45.155.171.55
-chmod -R 755 /home/mmi23c14/public_html/overload-back
-chmod -R 777 /home/mmi23c14/public_html/overload-back/var
+ssh mmi23c07@45.155.171.55
+chmod -R 755 /home/mmi23c07/public_html/overload-back
+chmod -R 777 /home/mmi23c07/public_html/overload-back/var
 ```
 
 ### Erreur composer
 ```bash
-ssh mmi23c14@45.155.171.55
-cd /home/mmi23c14/public_html/overload-back
+ssh mmi23c07@45.155.171.55
+cd /home/mmi23c07/public_html/overload-back
 composer install --no-dev --optimize-autoloader
 ```
 
 ### Cache corrompu
 ```bash
-ssh mmi23c14@45.155.171.55
-cd /home/mmi23c14/public_html/overload-back
+ssh mmi23c07@45.155.171.55
+cd /home/mmi23c07/public_html/overload-back
 rm -rf var/cache/*
 php bin/console cache:clear --env=prod
 ```

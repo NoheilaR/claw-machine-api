@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Script de déploiement Symfony pour VPS
-# Chemin : /home/mmi23c14/public_html/overload-back
+# Chemin : /home/mmi23c07/public_html/overload-back
 
 set -e  # Arrêt si erreur
 
 echo "🚀 Début du déploiement..."
 
 # Variables
-APP_DIR="/home/mmi23c14/public_html/overload-back"
+APP_DIR="/home/mmi23c07/public_html/overload-back"
 BRANCH="production"
 
 # Se déplacer dans le répertoire de l'application

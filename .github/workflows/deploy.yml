@@ -21,7 +21,7 @@ jobs:
         port: 22
         script: |
           echo "📁 Déplacement vers le répertoire du projet..."
-          cd /var/www/claw-machine-api
+          cd /home/mmi23c07/public_html/overload-back
 
           echo "📥 Récupération des dernières modifications..."
           git fetch origin

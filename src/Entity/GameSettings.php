@@ -69,9 +69,6 @@ class GameSettings
     #[ORM\Column]
     private float $rareProbability = 25.0;
 
-    #[ORM\Column]
-    private float $legendaryProbability = 5.0;
-
     // ===== PERTURBATION COMMANDES (GLITCH) =====
     #[ORM\Column]
     private float $glitchProbability = 60.0;
@@ -267,17 +264,6 @@ class GameSettings
     public function setRareProbability(float $rareProbability): static
     {
         $this->rareProbability = $rareProbability;
-        return $this;
-    }
-
-    public function getLegendaryProbability(): float
-    {
-        return $this->legendaryProbability;
-    }
-
-    public function setLegendaryProbability(float $legendaryProbability): static
-    {
-        $this->legendaryProbability = $legendaryProbability;
         return $this;
     }
 

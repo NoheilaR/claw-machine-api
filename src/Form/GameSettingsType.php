@@ -131,13 +131,6 @@ class GameSettingsType extends AbstractType
                 'attr' => ['min' => 0, 'max' => 100, 'step' => 5],
                 'help' => 'Probabilité peluche rare'
             ])
-            ->add('legendaryProbability', NumberType::class, [
-                'label' => 'Probabilité Legendary (%)',
-                'scale' => 1,
-                'attr' => ['min' => 0, 'max' => 100, 'step' => 1],
-                'help' => 'Probabilité peluche légendaire'
-            ])
-
             // ===== PERTURBATION COMMANDES (GLITCH) =====
             ->add('glitchProbability', NumberType::class, [
                 'label' => 'Probabilité inversion commandes (%)',
