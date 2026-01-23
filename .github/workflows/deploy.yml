@@ -40,6 +40,9 @@ jobs:
           echo "🗄️ Exécution des migrations..."
           sudo -u www-data php bin/console doctrine:migrations:migrate --no-interaction || php bin/console doctrine:migrations:migrate --no-interaction
 
+          echo "📊 Initialisation des données..."
+          sudo -u www-data php bin/console app:init-data --no-interaction || php bin/console app:init-data --no-interaction
+
           echo "🔐 Ajustement des permissions..."
           sudo chown -R www-data:www-data var/cache var/log
           sudo chmod -R 775 var/cache var/log
