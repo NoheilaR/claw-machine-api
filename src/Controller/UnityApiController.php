@@ -43,10 +43,31 @@ class UnityApiController extends AbstractController
 
         return $this->json([
             'id' => $settings->getId(),
-            'clawSpeed' => $settings->getClawSpeed(),
             'timeLimit' => $settings->getTimeLimit(),
-            'difficulty' => $settings->getDifficulty(),
-            'itemSpawnRate' => $settings->getItemSpawnRate()
+            // Tokens - Energy
+            'energyTokenProbability' => $settings->getEnergyTokenProbability(),
+            'minEnergyTokens' => $settings->getMinEnergyTokens(),
+            'maxEnergyTokens' => $settings->getMaxEnergyTokens(),
+            // Tokens - Bomb
+            'bombTokenProbability' => $settings->getBombTokenProbability(),
+            'minBombTokens' => $settings->getMinBombTokens(),
+            'maxBombTokens' => $settings->getMaxBombTokens(),
+            // Tokens - Blackout
+            'blackoutTokenProbability' => $settings->getBlackoutTokenProbability(),
+            'minBlackoutTokens' => $settings->getMinBlackoutTokens(),
+            'maxBlackoutTokens' => $settings->getMaxBlackoutTokens(),
+            // Plushies - Quantities
+            'initialPlushieCount' => $settings->getInitialPlushieCount(),
+            'minPlushiesBeforeRespawn' => $settings->getMinPlushiesBeforeRespawn(),
+            'maxPlushiesInBin' => $settings->getMaxPlushiesInBin(),
+            'plushiesPerSpawn' => $settings->getPlushiesPerSpawn(),
+            // Plushies - Rarities
+            'commonProbability' => $settings->getCommonProbability(),
+            'rareProbability' => $settings->getRareProbability(),
+            // Glitch
+            'glitchProbability' => $settings->getGlitchProbability(),
+            'glitchEnergyThreshold' => $settings->getGlitchEnergyThreshold(),
+            'glitchChangeInterval' => $settings->getGlitchChangeInterval()
         ]);
     }
 
