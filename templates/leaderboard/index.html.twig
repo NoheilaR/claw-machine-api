@@ -163,15 +163,22 @@
             margin-bottom: 8px;
         }
 
-        /* Admin link */
+        /* Top navbar */
+        .top-nav {
+            display: flex;
+            justify-content: flex-end;
+            padding: 20px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+        }
+
         .admin-link {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(15, 15, 25, 0.9);
+            background: rgba(15, 15, 25, 0.8);
             border: 1px solid rgba(139, 92, 246, 0.3);
             border-radius: 10px;
-            padding: 12px 20px;
+            padding: 10px 18px;
             color: var(--text-secondary);
             text-decoration: none;
             font-size: 0.9em;
@@ -288,8 +295,10 @@
         </footer>
     </div>
 
-    <!-- Lien admin -->
-    <a href="{{ path('app_login') }}" class="admin-link">
-        <span class="admin-icon">⚙</span> Administration
-    </a>
+    <!-- Navigation en haut -->
+    <nav class="top-nav">
+        <a href="{{ path('app_login') }}" class="admin-link">
+            <span class="admin-icon">⚙</span> Admin
+        </a>
+    </nav>
 {% endblock %}
