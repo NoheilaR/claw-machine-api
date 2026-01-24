@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Parametres - OVERLOAD{% endblock %}
+{% block title %}Parametres - Admin{% endblock %}
 
 {% block body %}
     <style>
@@ -9,39 +9,50 @@
             padding: 40px 20px;
         }
 
-        .back-button {
-            display: inline-flex;
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            margin: 0 0 40px 0;
+            margin-bottom: 40px;
+        }
+
+        .admin-header h1 {
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .nav-link {
             padding: 10px 20px;
-            color: var(--text-secondary);
+            border-radius: 8px;
             text-decoration: none;
+            color: var(--text-secondary);
             font-weight: 500;
             transition: all 0.3s ease;
-            border-radius: 8px;
             border: 1px solid transparent;
         }
 
-        .back-button:hover {
+        .nav-link:hover {
             color: var(--text-primary);
             border-color: rgba(139, 92, 246, 0.3);
             background: rgba(139, 92, 246, 0.05);
         }
 
-        .page-header {
-            margin-bottom: 40px;
+        .nav-link.active {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.4);
+            color: var(--text-primary);
         }
 
-        .page-header h1 {
-            font-size: 2.5em;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        .page-header p {
-            color: var(--text-secondary);
-            font-size: 1em;
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
         }
 
         .settings-container {
@@ -59,15 +70,6 @@
             background: rgba(6, 182, 212, 0.1);
             border: 1px solid var(--cyan);
             color: var(--cyan);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .flash-message::before {
-            content: 'V';
-            font-size: 1.2em;
-            font-weight: 700;
         }
 
         .section-header {
@@ -76,9 +78,7 @@
             border-bottom: 1px solid rgba(139, 92, 246, 0.3);
         }
 
-        .section-header:first-of-type {
-            margin-top: 0;
-        }
+        .section-header:first-of-type { margin-top: 0; }
 
         .section-header h3 {
             font-size: 1.2em;
@@ -99,14 +99,6 @@
             gap: 16px;
         }
 
-        .form-row {
-            margin-bottom: 0;
-        }
-
-        .form-row.full-width {
-            grid-column: 1 / -1;
-        }
-
         .form-row label {
             display: block;
             margin-bottom: 8px;
@@ -115,8 +107,7 @@
             font-weight: 600;
         }
 
-        .form-row input[type="number"],
-        .form-row select {
+        .form-row input[type="number"] {
             width: 100%;
             background: rgba(15, 15, 25, 0.4);
             border: 1px solid rgba(139, 92, 246, 0.2);
@@ -127,8 +118,7 @@
             transition: all 0.3s ease;
         }
 
-        .form-row input:focus,
-        .form-row select:focus {
+        .form-row input:focus {
             outline: none;
             border-color: var(--purple);
             box-shadow: var(--glow-purple);
@@ -138,7 +128,6 @@
             margin-top: 4px;
             font-size: 0.75em;
             color: var(--text-muted);
-            line-height: 1.3;
         }
 
         .current-value {
@@ -170,29 +159,23 @@
             border-color: var(--purple);
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.2));
             box-shadow: var(--glow-purple);
-            transform: translateY(-1px);
         }
 
         @media (max-width: 768px) {
-            .page-header h1 {
-                font-size: 2em;
-            }
-
-            .settings-container {
-                padding: 24px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
+            .form-grid { grid-template-columns: 1fr; }
+            .admin-header { flex-direction: column; gap: 20px; text-align: center; }
         }
     </style>
 
     <div class="container">
-        <div class="page-header">
-            <a href="{{ path('dashboard') }}" class="back-button">&larr; Retour</a>
+        <div class="admin-header">
             <h1>Parametres du jeu</h1>
-            <p>Configurez les reglages de spawn des peluches et tokens</p>
+            <nav class="admin-nav">
+                <a href="{{ path('leaderboard') }}" class="nav-link">Classement</a>
+                <a href="{{ path('admin_dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ path('admin_settings') }}" class="nav-link active">Parametres</a>
+                <a href="{{ path('app_logout') }}" class="nav-link logout-btn">Deconnexion</a>
+            </nav>
         </div>
 
         <div class="settings-container">
@@ -202,7 +185,7 @@
 
             {{ form_start(form) }}
 
-            {# ===== GENERAL ===== #}
+            {# GENERAL #}
             <div class="section-header">
                 <h3>General</h3>
                 <p class="section-desc">Parametres globaux de la partie</p>
@@ -216,133 +199,141 @@
                 </div>
             </div>
 
-            {# ===== TOKENS - ENERGY ===== #}
+            {# ENERGY TOKENS #}
             <div class="section-header">
                 <h3>Energy Tokens</h3>
-                <p class="section-desc">Jetons qui rechargent la jauge d'energie du joueur</p>
+                <p class="section-desc">Jetons qui rechargent l'energie</p>
             </div>
             <div class="form-grid">
                 <div class="form-row">
                     {{ form_label(form.energyTokenProbability) }}
                     <span class="current-value">{{ settings.energyTokenProbability }}%</span>
                     {{ form_widget(form.energyTokenProbability) }}
-                    {{ form_help(form.energyTokenProbability) }}
                 </div>
                 <div class="form-row">
                     {{ form_label(form.minEnergyTokens) }}
                     <span class="current-value">{{ settings.minEnergyTokens }}</span>
                     {{ form_widget(form.minEnergyTokens) }}
-                    {{ form_help(form.minEnergyTokens) }}
                 </div>
                 <div class="form-row">
                     {{ form_label(form.maxEnergyTokens) }}
                     <span class="current-value">{{ settings.maxEnergyTokens }}</span>
                     {{ form_widget(form.maxEnergyTokens) }}
-                    {{ form_help(form.maxEnergyTokens) }}
                 </div>
             </div>
 
-            {# ===== TOKENS - BOMB ===== #}
+            {# BOMB TOKENS #}
             <div class="section-header">
                 <h3>Bomb Tokens</h3>
-                <p class="section-desc">Jetons explosifs qui detruisent les peluches autour</p>
+                <p class="section-desc">Jetons explosifs</p>
             </div>
             <div class="form-grid">
                 <div class="form-row">
                     {{ form_label(form.bombTokenProbability) }}
                     <span class="current-value">{{ settings.bombTokenProbability }}%</span>
                     {{ form_widget(form.bombTokenProbability) }}
-                    {{ form_help(form.bombTokenProbability) }}
                 </div>
                 <div class="form-row">
                     {{ form_label(form.minBombTokens) }}
                     <span class="current-value">{{ settings.minBombTokens }}</span>
                     {{ form_widget(form.minBombTokens) }}
-                    {{ form_help(form.minBombTokens) }}
                 </div>
                 <div class="form-row">
                     {{ form_label(form.maxBombTokens) }}
                     <span class="current-value">{{ settings.maxBombTokens }}</span>
                     {{ form_widget(form.maxBombTokens) }}
-                    {{ form_help(form.maxBombTokens) }}
                 </div>
             </div>
 
-            {# ===== TOKENS - BLACKOUT ===== #}
+            {# BLACKOUT TOKENS #}
             <div class="section-header">
                 <h3>Blackout Tokens</h3>
-                <p class="section-desc">Jetons qui activent le mode blackout (multiplicateur de points x2)</p>
+                <p class="section-desc">Mode blackout (x2 points)</p>
             </div>
             <div class="form-grid">
                 <div class="form-row">
                     {{ form_label(form.blackoutTokenProbability) }}
                     <span class="current-value">{{ settings.blackoutTokenProbability }}%</span>
                     {{ form_widget(form.blackoutTokenProbability) }}
-                    {{ form_help(form.blackoutTokenProbability) }}
                 </div>
                 <div class="form-row">
                     {{ form_label(form.minBlackoutTokens) }}
                     <span class="current-value">{{ settings.minBlackoutTokens }}</span>
                     {{ form_widget(form.minBlackoutTokens) }}
-                    {{ form_help(form.minBlackoutTokens) }}
                 </div>
                 <div class="form-row">
                     {{ form_label(form.maxBlackoutTokens) }}
                     <span class="current-value">{{ settings.maxBlackoutTokens }}</span>
                     {{ form_widget(form.maxBlackoutTokens) }}
-                    {{ form_help(form.maxBlackoutTokens) }}
                 </div>
             </div>
 
-            {# ===== PELUCHES - QUANTITES ===== #}
+            {# PELUCHES QUANTITES #}
             <div class="section-header">
                 <h3>Peluches - Quantites</h3>
-                <p class="section-desc">Controle le nombre de peluches dans le bac et le respawn</p>
+                <p class="section-desc">Nombre de peluches et respawn</p>
             </div>
             <div class="form-grid">
                 <div class="form-row">
                     {{ form_label(form.initialPlushieCount) }}
                     <span class="current-value">{{ settings.initialPlushieCount }}</span>
                     {{ form_widget(form.initialPlushieCount) }}
-                    {{ form_help(form.initialPlushieCount) }}
                 </div>
                 <div class="form-row">
                     {{ form_label(form.minPlushiesBeforeRespawn) }}
                     <span class="current-value">{{ settings.minPlushiesBeforeRespawn }}</span>
                     {{ form_widget(form.minPlushiesBeforeRespawn) }}
-                    {{ form_help(form.minPlushiesBeforeRespawn) }}
                 </div>
                 <div class="form-row">
                     {{ form_label(form.maxPlushiesInBin) }}
                     <span class="current-value">{{ settings.maxPlushiesInBin }}</span>
                     {{ form_widget(form.maxPlushiesInBin) }}
-                    {{ form_help(form.maxPlushiesInBin) }}
                 </div>
                 <div class="form-row">
                     {{ form_label(form.plushiesPerSpawn) }}
                     <span class="current-value">{{ settings.plushiesPerSpawn }}</span>
                     {{ form_widget(form.plushiesPerSpawn) }}
-                    {{ form_help(form.plushiesPerSpawn) }}
                 </div>
             </div>
 
-            {# ===== PELUCHES - RARETES ===== #}
+            {# PELUCHES RARETES #}
             <div class="section-header">
                 <h3>Peluches - Raretes</h3>
-                <p class="section-desc">Probabilites d'apparition selon la rarete (le total doit faire 100%)</p>
+                <p class="section-desc">Probabilites par rarete</p>
             </div>
             <div class="form-grid">
                 <div class="form-row">
                     {{ form_label(form.commonProbability) }}
                     <span class="current-value">{{ settings.commonProbability }}%</span>
                     {{ form_widget(form.commonProbability) }}
-                    {{ form_help(form.commonProbability) }}
                 </div>
                 <div class="form-row">
                     {{ form_label(form.rareProbability) }}
                     <span class="current-value">{{ settings.rareProbability }}%</span>
                     {{ form_widget(form.rareProbability) }}
-                    {{ form_help(form.rareProbability) }}
+                </div>
+            </div>
+
+            {# GLITCH #}
+            <div class="section-header">
+                <h3>Perturbation (Glitch)</h3>
+                <p class="section-desc">Inversion des commandes</p>
+            </div>
+            <div class="form-grid">
+                <div class="form-row">
+                    {{ form_label(form.glitchProbability) }}
+                    <span class="current-value">{{ settings.glitchProbability }}%</span>
+                    {{ form_widget(form.glitchProbability) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.glitchEnergyThreshold) }}
+                    <span class="current-value">{{ settings.glitchEnergyThreshold }}%</span>
+                    {{ form_widget(form.glitchEnergyThreshold) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.glitchChangeInterval) }}
+                    <span class="current-value">{{ settings.glitchChangeInterval }}s</span>
+                    {{ form_widget(form.glitchChangeInterval) }}
                 </div>
             </div>
 
