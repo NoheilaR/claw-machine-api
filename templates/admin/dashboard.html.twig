@@ -230,6 +230,138 @@
             color: var(--text-muted);
         }
 
+        /* Danger Zone */
+        .danger-zone {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 28px;
+            margin-top: 40px;
+        }
+
+        .danger-zone .section-title {
+            color: #ef4444;
+        }
+
+        .danger-zone p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+
+        .reset-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 8px;
+            color: #ef4444;
+            padding: 12px 24px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .modal-box h3 {
+            color: #ef4444;
+            font-size: 1.5em;
+            margin-bottom: 16px;
+        }
+
+        .modal-box p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .modal-box .score-count {
+            font-size: 2em;
+            font-weight: 700;
+            color: #ef4444;
+            margin: 16px 0;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .modal-btn.cancel {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+            color: var(--text-primary);
+        }
+
+        .modal-btn.cancel:hover {
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .modal-btn.confirm {
+            background: #ef4444;
+            color: white;
+        }
+
+        .modal-btn.confirm:hover {
+            background: #dc2626;
+        }
+
+        /* Flash messages */
+        .flash-success {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            color: #22c55e;
+            padding: 14px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
+        .flash-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #ef4444;
+            padding: 14px 20px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+
         @media (max-width: 968px) {
             .main-grid { grid-template-columns: 1fr; }
             .admin-header { flex-direction: column; gap: 20px; }
@@ -318,5 +450,56 @@
                 {% endif %}
             </div>
         </div>
+
+        <!-- Flash messages -->
+        {% for message in app.flashes('success') %}
+            <div class="flash-success">{{ message }}</div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="flash-error">{{ message }}</div>
+        {% endfor %}
+
+        <!-- Danger Zone -->
+        <div class="danger-zone">
+            <h2 class="section-title">Zone dangereuse</h2>
+            <p>Attention : cette action est irreversible. Tous les scores seront definitivement supprimes.</p>
+            <button type="button" class="reset-btn" onclick="openResetModal()">
+                Reinitialiser tous les scores
+            </button>
+        </div>
     </div>
+
+    <!-- Modal de confirmation -->
+    <div class="modal-overlay" id="resetModal">
+        <div class="modal-box">
+            <h3>Confirmer la reinitialisation</h3>
+            <p>Tu es sur le point de supprimer <strong>tous les scores</strong> de la base de donnees.</p>
+            <div class="score-count">{{ totalScores }} scores</div>
+            <p>Cette action est <strong>irreversible</strong>. Es-tu sur ?</p>
+            <div class="modal-buttons">
+                <button type="button" class="modal-btn cancel" onclick="closeResetModal()">Annuler</button>
+                <form action="{{ path('admin_reset_scores') }}" method="post" style="display: inline;">
+                    <input type="hidden" name="_token" value="{{ csrf_token('reset-scores') }}">
+                    <button type="submit" class="modal-btn confirm">Oui, tout supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openResetModal() {
+            document.getElementById('resetModal').classList.add('active');
+        }
+        function closeResetModal() {
+            document.getElementById('resetModal').classList.remove('active');
+        }
+        // Fermer avec Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeResetModal();
+        });
+        // Fermer en cliquant en dehors
+        document.getElementById('resetModal').addEventListener('click', function(e) {
+            if (e.target === this) closeResetModal();
+        });
+    </script>
 {% endblock %}

@@ -168,19 +168,29 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: rgba(15, 15, 25, 0.8);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 8px;
-            padding: 10px 16px;
-            color: var(--text-muted);
+            background: rgba(15, 15, 25, 0.9);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.85em;
+            font-size: 0.9em;
+            font-weight: 500;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .admin-link:hover {
             border-color: var(--purple);
             color: var(--text-primary);
+            background: rgba(139, 92, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .admin-icon {
+            font-size: 1.1em;
         }
 
         @media (max-width: 640px) {
@@ -278,6 +288,8 @@
         </footer>
     </div>
 
-    <!-- Lien admin discret -->
-    <a href="{{ path('app_login') }}" class="admin-link">Admin</a>
+    <!-- Lien admin -->
+    <a href="{{ path('app_login') }}" class="admin-link">
+        <span class="admin-icon">⚙</span> Administration
+    </a>
 {% endblock %}
