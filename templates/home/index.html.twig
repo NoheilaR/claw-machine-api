@@ -1,246 +1,1058 @@
 {% extends 'base.html.twig' %}
-{% block title %}OVERLOAD - Le jeu d'arcade{% endblock %}
+{% block title %}OVERLOAD - Arcade Game{% endblock %}
 
 {% block body %}
     <style>
+        @font-face {
+            font-family: 'Excelorate';
+            src: url('{{ asset('fonts/Excelorate.ttf') }}') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Animations au scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-left {
+            opacity: 0;
+            transform: translateX(-60px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-right {
+            opacity: 0;
+            transform: translateX(60px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Floating plushies background */
+        .floating-plushies {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .floating-plush {
+            position: absolute;
+            opacity: 0.15;
+            animation: float-random 20s infinite ease-in-out;
+        }
+
+        .floating-plush:nth-child(1) { left: 5%; top: 20%; animation-delay: 0s; width: 80px; }
+        .floating-plush:nth-child(2) { right: 8%; top: 35%; animation-delay: -5s; width: 60px; }
+        .floating-plush:nth-child(3) { left: 12%; bottom: 25%; animation-delay: -10s; width: 70px; }
+        .floating-plush:nth-child(4) { right: 15%; bottom: 15%; animation-delay: -15s; width: 50px; }
+        .floating-plush:nth-child(5) { left: 50%; top: 10%; animation-delay: -8s; width: 40px; }
+        .floating-plush:nth-child(6) { right: 25%; top: 60%; animation-delay: -12s; width: 55px; }
+
+        @keyframes float-random {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(10px) rotate(-3deg); }
+            75% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .nav-logo {
+            font-family: 'Excelorate', sans-serif;
+            font-size: 1.8em;
+            color: var(--purple);
+            letter-spacing: 3px;
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+            50% { opacity: 0.8; box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--purple);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--purple);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
         /* Hero Section */
         .hero {
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px 20px;
+            padding: 140px 40px 100px;
             position: relative;
+            overflow: hidden;
         }
 
-        .hero-content {
-            max-width: 800px;
-            z-index: 10;
-        }
-
-        /* Title with glitch effect */
-        .main-title {
-            font-size: 5em;
-            font-weight: 700;
-            margin-bottom: 20px;
-            position: relative;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899, #8b5cf6);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient-shift 3s ease infinite;
-        }
-
-        @keyframes gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .main-title::before,
-        .main-title::after {
-            content: 'OVERLOAD';
+        .hero::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-content {
+            z-index: 10;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--purple);
+            margin-bottom: 28px;
+        }
+
+        .hero-tag .icon {
+            font-size: 1.2em;
+        }
+
+        .hero-title {
+            font-family: 'Excelorate', sans-serif;
+            font-size: 6em;
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 28px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #8b5cf6 100%);
+            background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            opacity: 0.8;
+            animation: gradient-flow 4s ease infinite;
+            letter-spacing: 4px;
         }
 
-        .main-title::before {
-            animation: glitch-1 2.5s infinite;
-            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        @keyframes gradient-flow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
 
-        .main-title::after {
-            animation: glitch-2 2.5s infinite;
-            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        .hero-subtitle {
+            font-size: 1.5em;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-weight: 600;
         }
 
-        @keyframes glitch-1 {
-            0%, 90%, 100% { transform: translate(0); }
-            92% { transform: translate(-3px, 1px); }
-            94% { transform: translate(3px, -1px); }
-            96% { transform: translate(-2px, 0); }
-        }
-
-        @keyframes glitch-2 {
-            0%, 90%, 100% { transform: translate(0); }
-            91% { transform: translate(2px, 1px); }
-            93% { transform: translate(-3px, 0); }
-            95% { transform: translate(2px, -1px); }
-        }
-
-        .tagline {
-            font-size: 1.4em;
+        .hero-desc {
+            font-size: 1.1em;
             color: var(--text-secondary);
+            line-height: 1.9;
             margin-bottom: 40px;
-            line-height: 1.6;
+            max-width: 520px;
         }
 
-        .tagline strong {
-            color: var(--purple);
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            align-items: center;
         }
 
-        /* Machine image */
-        .machine-container {
-            margin: 40px 0;
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+            border: none;
+            padding: 18px 36px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 18px 36px;
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1em;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--purple);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             position: relative;
         }
 
         .machine-img {
-            max-width: 400px;
-            width: 100%;
+            max-width: 100%;
             height: auto;
-            filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.3));
-            animation: float 4s ease-in-out infinite;
+            max-height: 650px;
+            filter: drop-shadow(0 0 80px rgba(139, 92, 246, 0.4));
+            animation: machine-float 5s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+        @keyframes machine-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
         }
 
-        /* CTA Button */
-        .cta-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.2));
-            border: 2px solid rgba(139, 92, 246, 0.6);
-            border-radius: 12px;
-            padding: 18px 40px;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 1.2em;
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .hero-stat {
+            text-align: left;
+        }
+
+        .hero-stat-value {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--purple);
+        }
+
+        .hero-stat-label {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Section commune */
+        section {
+            padding: 120px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            color: var(--purple);
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 16px;
             font-weight: 600;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .cta-btn:hover {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(236, 72, 153, 0.3));
-            border-color: var(--purple);
-            box-shadow: var(--glow-purple), 0 0 40px rgba(139, 92, 246, 0.3);
-            transform: translateY(-3px);
-        }
-
-        .cta-btn .arrow {
-            transition: transform 0.3s ease;
-        }
-
-        .cta-btn:hover .arrow {
-            transform: translateX(5px);
-        }
-
-        /* How to play section */
-        .how-to-play {
-            padding: 80px 20px;
-            background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.05));
         }
 
         .section-title {
-            text-align: center;
-            font-size: 2.5em;
+            font-size: 3.5em;
             font-weight: 700;
-            margin-bottom: 50px;
             color: var(--text-primary);
+            line-height: 1.2;
         }
 
-        .tuto-container {
-            max-width: 900px;
-            margin: 0 auto;
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.1em;
+            max-width: 600px;
+            margin: 20px auto 0;
+            line-height: 1.8;
+        }
+
+        /* Features */
+        .features {
+            background: linear-gradient(180deg, transparent 0%, rgba(139, 92, 246, 0.05) 50%, transparent 100%);
+            padding: 120px 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: rgba(15, 15, 25, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            border-radius: 20px;
+            padding: 45px 35px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--purple), #ec4899);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
+        }
+
+        .feature-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-desc {
+            color: var(--text-muted);
+            line-height: 1.8;
+            font-size: 0.95em;
+        }
+
+        /* Tokens section */
+        .tokens-section {
+            background: rgba(139, 92, 246, 0.03);
+            border-top: 1px solid rgba(139, 92, 246, 0.1);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .tokens-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .token-item {
+            text-align: center;
+            padding: 40px 30px;
+            background: rgba(15, 15, 25, 0.6);
+            border-radius: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .token-item:hover {
+            transform: scale(1.05);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .token-img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.6));
+            animation: token-pulse 3s ease-in-out infinite;
+        }
+
+        .token-item:nth-child(2) .token-img {
+            animation-delay: -1s;
+        }
+
+        .token-item:nth-child(3) .token-img {
+            animation-delay: -2s;
+        }
+
+        @keyframes token-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .token-name {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .token-effect {
+            color: var(--text-muted);
+            font-size: 0.9em;
+        }
+
+        .token-effect.good { color: #22c55e; }
+        .token-effect.bad { color: #ef4444; }
+        .token-effect.neutral { color: #f59e0b; }
+
+        /* How to play */
+        .howto {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .howto-content {
+            order: 1;
+        }
+
+        .howto-image {
+            order: 2;
+            position: relative;
+        }
+
+        .howto-image img {
+            width: 100%;
+            border-radius: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .howto-list {
+            list-style: none;
+            margin-top: 40px;
+        }
+
+        .howto-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 28px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1.05em;
+        }
+
+        .howto-list .num {
             display: flex;
             align-items: center;
             justify-content: center;
+            min-width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.2));
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1em;
         }
 
-        .tuto-img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 16px;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.15);
+        /* Plushies showcase */
+        .plushies-section {
+            text-align: center;
         }
 
-        /* Scroll indicator */
-        .scroll-hint {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: var(--text-muted);
-            font-size: 0.85em;
+        .plushies-row {
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+        }
+
+        .plush-item {
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .plush-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .plush-img {
+            width: 120px;
+            height: 120px;
+            filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5));
+            animation: plush-bounce 4s ease-in-out infinite;
+        }
+
+        .plush-item:nth-child(2) .plush-img { animation-delay: -1s; }
+        .plush-item:nth-child(3) .plush-img { animation-delay: -2s; }
+        .plush-item:nth-child(4) .plush-img { animation-delay: -3s; }
+
+        @keyframes plush-bounce {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        .plush-points {
+            margin-top: 15px;
+            font-weight: 700;
+            color: var(--purple);
+            font-size: 1.1em;
+        }
+
+        /* Leaderboard preview */
+        .leaderboard-section {
+            padding: 120px 40px;
+        }
+
+        .leaderboard-preview {
+            background: rgba(15, 15, 25, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            max-width: 750px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .lb-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 30px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.1));
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .lb-header h3 {
+            font-size: 1.1em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .lb-status {
+            display: flex;
             align-items: center;
             gap: 8px;
-            animation: bounce 2s infinite;
+            font-size: 0.8em;
+            color: #22c55e;
+            font-weight: 600;
         }
 
-        .scroll-hint .chevron {
-            font-size: 1.5em;
+        .lb-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 120px;
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
+            align-items: center;
+            transition: background 0.3s ease;
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(8px); }
+        .lb-row:hover {
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .lb-row:last-of-type {
+            border-bottom: none;
+        }
+
+        .lb-rank {
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        .lb-rank.gold { color: #ffd700; text-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+        .lb-rank.silver { color: #c0c0c0; }
+        .lb-rank.bronze { color: #cd7f32; }
+
+        .lb-name {
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        .lb-score {
+            text-align: right;
+            font-weight: 700;
+            color: var(--purple);
+            font-size: 1.1em;
+        }
+
+        .lb-cta {
+            text-align: center;
+            padding: 28px;
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .lb-cta a {
+            color: var(--purple);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lb-cta a:hover {
+            gap: 12px;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 50px 40px;
+            text-align: center;
+            border-top: 1px solid rgba(139, 92, 246, 0.1);
+            background: rgba(10, 10, 15, 0.5);
+        }
+
+        .footer-logo {
+            font-family: 'Excelorate', sans-serif;
+            font-size: 2em;
+            color: var(--purple);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 0.9em;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--purple);
         }
 
         /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 50px;
+            }
+
+            .hero-content { order: 2; }
+            .hero-image { order: 1; }
+            .hero-desc { margin: 0 auto 40px; }
+            .hero-cta { justify-content: center; }
+            .hero-title { font-size: 4em; }
+            .hero-stats { justify-content: center; }
+
+            .features-grid, .tokens-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .howto {
+                grid-template-columns: 1fr;
+            }
+
+            .howto-content, .howto-image { order: initial; }
+        }
+
         @media (max-width: 768px) {
-            .main-title {
-                font-size: 3em;
-            }
-
-            .tagline {
-                font-size: 1.1em;
-            }
-
-            .machine-img {
-                max-width: 280px;
-            }
-
-            .section-title {
-                font-size: 1.8em;
-            }
+            .navbar { padding: 16px 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 100px 20px 60px; }
+            .hero-title { font-size: 3em; }
+            section { padding: 80px 20px; }
+            .section-title { font-size: 2.2em; }
+            .hero-cta { flex-direction: column; }
+            .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+            .floating-plushies { display: none; }
+            .plushies-row { gap: 30px; }
+            .plush-img { width: 80px; height: 80px; }
         }
     </style>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="main-title">OVERLOAD</h1>
-            <p class="tagline">
-                Controle la pince, attrape les peluches,<br>
-                gere ton <strong>energie</strong> et deviens le <strong>meilleur</strong>.
-            </p>
+    <!-- Floating plushies background -->
+    <div class="floating-plushies">
+        <img src="{{ asset('images/plush_bunny.png') }}" class="floating-plush" alt="">
+        <img src="{{ asset('images/plush_ghost.png') }}" class="floating-plush" alt="">
+        <img src="{{ asset('images/plush_monster.png') }}" class="floating-plush" alt="">
+        <img src="{{ asset('images/plush_ducky.png') }}" class="floating-plush" alt="">
+        <img src="{{ asset('images/plush_bunny.png') }}" class="floating-plush" alt="">
+        <img src="{{ asset('images/plush_ghost.png') }}" class="floating-plush" alt="">
+    </div>
 
-            <div class="machine-container">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-logo">OVERLOAD</div>
+        <div class="nav-status">
+            <span class="status-dot"></span>
+            <span>SYSTEM.ONLINE</span>
+        </div>
+        <div class="nav-links">
+            <a href="#features">Gameplay</a>
+            <a href="#tokens">Tokens</a>
+            <a href="#howto">Regles</a>
+            <a href="#leaderboard">Scores</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-grid">
+            <div class="hero-content fade-in">
+                <span class="hero-tag"><span class="icon">🕹️</span> Arcade Experience</span>
+                <h1 class="hero-title">OVERLOAD</h1>
+                <p class="hero-subtitle">Attrape. Survis. Domine.</p>
+                <p class="hero-desc">
+                    Plonge dans l'arene et prends le controle de la pince magnetique.
+                    Chaque peluche compte, chaque seconde est precieuse.
+                    Gere ton energie, evite les pieges et inscris ton nom dans la legende.
+                </p>
+                <div class="hero-cta">
+                    <a href="{{ path('leaderboard') }}" class="btn-primary">
+                        Voir les scores →
+                    </a>
+                    <a href="#howto" class="btn-secondary">
+                        Decouvrir le jeu
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">∞</div>
+                        <div class="hero-stat-label">Parties</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">1-2</div>
+                        <div class="hero-stat-label">Joueurs</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">~2min</div>
+                        <div class="hero-stat-label">Par partie</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image fade-in">
                 <img src="{{ asset('images/machine.png') }}" alt="Machine OVERLOAD" class="machine-img">
             </div>
-
-            <a href="{{ path('leaderboard') }}" class="cta-btn">
-                Voir le classement
-                <span class="arrow">→</span>
-            </a>
         </div>
+    </section>
 
-        <div class="scroll-hint">
-            <span>Comment jouer</span>
-            <span class="chevron">↓</span>
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="section-header fade-in">
+            <span class="section-tag">// Le concept</span>
+            <h2 class="section-title">Un gameplay nerveux</h2>
+            <p class="section-desc">
+                Chaque partie est une course contre la montre. Ta jauge d'energie se vide,
+                a toi de la maintenir tout en scorant un max.
+            </p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <img src="{{ asset('images/energy_icon.png') }}" class="feature-icon" alt="Energie">
+                <h3 class="feature-title">Energie vitale</h3>
+                <p class="feature-desc">
+                    Ta jauge baisse en permanence. Quand elle atteint zero, c'est game over.
+                    Attrape les tokens energie pour rester en vie.
+                </p>
+            </div>
+            <div class="feature-card fade-in">
+                <img src="{{ asset('images/jeton_bomb.png') }}" class="feature-icon" alt="Danger">
+                <h3 class="feature-title">Pieges mortels</h3>
+                <p class="feature-desc">
+                    Les bombes te font perdre des points. Les blackouts inversent tes commandes.
+                    Reste concentre ou paie le prix.
+                </p>
+            </div>
+            <div class="feature-card fade-in">
+                <img src="{{ asset('images/plush_ghost.png') }}" class="feature-icon" alt="Score">
+                <h3 class="feature-title">Scoring strategic</h3>
+                <p class="feature-desc">
+                    Toutes les peluches ne se valent pas. Les rares rapportent gros.
+                    A toi de choisir: quantite ou qualite ?
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tokens -->
+    <section class="tokens-section" id="tokens">
+        <div class="section-header fade-in">
+            <span class="section-tag">// Les tokens</span>
+            <h2 class="section-title">Maitrise les elements</h2>
+            <p class="section-desc">
+                Trois types de tokens peuvent changer le cours de ta partie. Apprends a les reconnaitre.
+            </p>
+        </div>
+        <div class="tokens-grid">
+            <div class="token-item slide-left">
+                <img src="{{ asset('images/jeton_energy.png') }}" class="token-img" alt="Token Energie">
+                <div class="token-name">Energie</div>
+                <div class="token-effect good">+ Recharge ta jauge</div>
+            </div>
+            <div class="token-item fade-in">
+                <img src="{{ asset('images/jeton_bomb.png') }}" class="token-img" alt="Token Bombe">
+                <div class="token-name">Bombe</div>
+                <div class="token-effect bad">- Perte de points</div>
+            </div>
+            <div class="token-item slide-right">
+                <img src="{{ asset('images/jeton_blackout.png') }}" class="token-img" alt="Token Blackout">
+                <div class="token-name">Blackout</div>
+                <div class="token-effect neutral">⚡ Commandes inversees</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plushies showcase -->
+    <section class="plushies-section">
+        <div class="section-header fade-in">
+            <span class="section-tag">// Les peluches</span>
+            <h2 class="section-title">Attrape-les toutes</h2>
+        </div>
+        <div class="plushies-row fade-in">
+            <div class="plush-item">
+                <img src="{{ asset('images/plush_bunny.png') }}" class="plush-img" alt="Bunny">
+                <div class="plush-points">+50 pts</div>
+            </div>
+            <div class="plush-item">
+                <img src="{{ asset('images/plush_ducky.png') }}" class="plush-img" alt="Ducky">
+                <div class="plush-points">+100 pts</div>
+            </div>
+            <div class="plush-item">
+                <img src="{{ asset('images/plush_ghost.png') }}" class="plush-img" alt="Ghost">
+                <div class="plush-points">+150 pts</div>
+            </div>
+            <div class="plush-item">
+                <img src="{{ asset('images/plush_monster.png') }}" class="plush-img" alt="Monster">
+                <div class="plush-points">+200 pts</div>
+            </div>
         </div>
     </section>
 
     <!-- How to play -->
-    <section class="how-to-play">
-        <h2 class="section-title">Comment jouer ?</h2>
-        <div class="tuto-container">
-            <img src="{{ asset('images/tuto.png') }}" alt="Tutoriel OVERLOAD" class="tuto-img">
+    <section id="howto">
+        <div class="howto">
+            <div class="howto-content slide-left">
+                <span class="section-tag">// Les regles</span>
+                <h2 class="section-title">Comment jouer</h2>
+                <ul class="howto-list">
+                    <li>
+                        <span class="num">01</span>
+                        <span>Utilise le <strong>joystick</strong> pour deplacer la pince au-dessus de ta cible</span>
+                    </li>
+                    <li>
+                        <span class="num">02</span>
+                        <span>Appuie sur le <strong>bouton</strong> pour descendre et activer l'aimant</span>
+                    </li>
+                    <li>
+                        <span class="num">03</span>
+                        <span>Ramene les peluches dans ta <strong>zone de depot</strong> pour scorer</span>
+                    </li>
+                    <li>
+                        <span class="num">04</span>
+                        <span>Surveille ta <strong>jauge d'energie</strong> - a zero, c'est termine</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="howto-image slide-right">
+                <img src="{{ asset('images/tuto.png') }}" alt="Tutoriel OVERLOAD">
+            </div>
         </div>
     </section>
+
+    <!-- Leaderboard preview -->
+    <section class="leaderboard-section" id="leaderboard">
+        <div class="section-header fade-in">
+            <span class="section-tag">// Les meilleurs</span>
+            <h2 class="section-title">Qui domine ?</h2>
+        </div>
+        <div class="leaderboard-preview fade-in">
+            <div class="lb-header">
+                <h3>Top Players</h3>
+                <span class="lb-status">
+                    <span class="status-dot"></span>
+                    En direct
+                </span>
+            </div>
+            {% if topScores|length > 0 %}
+                {% for score in topScores %}
+                    <div class="lb-row">
+                        <span class="lb-rank {{ loop.index == 1 ? 'gold' : (loop.index == 2 ? 'silver' : 'bronze') }}">#{{ loop.index }}</span>
+                        <span class="lb-name">{{ score.playerName }}</span>
+                        <span class="lb-score">{{ score.score }} pts</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="lb-row">
+                    <span class="lb-rank">-</span>
+                    <span class="lb-name" style="color: var(--text-muted);">En attente du premier champion...</span>
+                    <span class="lb-score">-</span>
+                </div>
+            {% endif %}
+            <div class="lb-cta">
+                <a href="{{ path('leaderboard') }}">Voir le classement complet →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">OVERLOAD</div>
+        <p>Projet SAE 501 — MMI Troyes {{ "now"|date("Y") }}</p>
+        <div class="footer-links">
+            <a href="{{ path('leaderboard') }}">Classement</a>
+            <a href="{{ path('app_login') }}">Admin</a>
+        </div>
+    </footer>
+
+    <!-- Scroll animations -->
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in, .slide-left, .slide-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
 {% endblock %}
