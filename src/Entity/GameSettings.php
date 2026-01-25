@@ -49,6 +49,19 @@ class GameSettings
     #[ORM\Column]
     private int $maxBlackoutTokens = 1;
 
+    // ===== TOKENS - STUN =====
+    #[ORM\Column]
+    private float $stunTokenProbability = 5.0;
+
+    #[ORM\Column]
+    private int $minStunTokens = 0;
+
+    #[ORM\Column]
+    private int $maxStunTokens = 2;
+
+    #[ORM\Column]
+    private float $stunDuration = 2.0;
+
     // ===== PELUCHES - QUANTITÉS =====
     #[ORM\Column]
     private int $initialPlushieCount = 15;
@@ -196,6 +209,51 @@ class GameSettings
     public function setMaxBlackoutTokens(int $maxBlackoutTokens): static
     {
         $this->maxBlackoutTokens = $maxBlackoutTokens;
+        return $this;
+    }
+
+    // --- Stun Tokens ---
+    public function getStunTokenProbability(): float
+    {
+        return $this->stunTokenProbability;
+    }
+
+    public function setStunTokenProbability(float $stunTokenProbability): static
+    {
+        $this->stunTokenProbability = $stunTokenProbability;
+        return $this;
+    }
+
+    public function getMinStunTokens(): int
+    {
+        return $this->minStunTokens;
+    }
+
+    public function setMinStunTokens(int $minStunTokens): static
+    {
+        $this->minStunTokens = $minStunTokens;
+        return $this;
+    }
+
+    public function getMaxStunTokens(): int
+    {
+        return $this->maxStunTokens;
+    }
+
+    public function setMaxStunTokens(int $maxStunTokens): static
+    {
+        $this->maxStunTokens = $maxStunTokens;
+        return $this;
+    }
+
+    public function getStunDuration(): float
+    {
+        return $this->stunDuration;
+    }
+
+    public function setStunDuration(float $stunDuration): static
+    {
+        $this->stunDuration = $stunDuration;
         return $this;
     }
 

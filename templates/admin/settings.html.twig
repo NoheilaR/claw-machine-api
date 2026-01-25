@@ -268,6 +268,34 @@
                 </div>
             </div>
 
+            {# STUN TOKENS #}
+            <div class="section-header">
+                <h3>Stun Tokens</h3>
+                <p class="section-desc">Immobilise le joueur temporairement</p>
+            </div>
+            <div class="form-grid">
+                <div class="form-row">
+                    {{ form_label(form.stunTokenProbability) }}
+                    <span class="current-value">{{ settings.stunTokenProbability }}%</span>
+                    {{ form_widget(form.stunTokenProbability) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.minStunTokens) }}
+                    <span class="current-value">{{ settings.minStunTokens }}</span>
+                    {{ form_widget(form.minStunTokens) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.maxStunTokens) }}
+                    <span class="current-value">{{ settings.maxStunTokens }}</span>
+                    {{ form_widget(form.maxStunTokens) }}
+                </div>
+                <div class="form-row">
+                    {{ form_label(form.stunDuration) }}
+                    <span class="current-value">{{ settings.stunDuration }}s</span>
+                    {{ form_widget(form.stunDuration) }}
+                </div>
+            </div>
+
             {# PELUCHES QUANTITES #}
             <div class="section-header">
                 <h3>Peluches - Quantites</h3>

@@ -35,18 +35,20 @@ class ScoreValidator
      */
     public function sanitizePlayerName(string $name): string
     {
-        // Supprimer les espaces en début/fin
+        // Supprimer les espaces en debut/fin
         $name = trim($name);
 
-        // Limiter la longueur
-        if (strlen($name) > 20) {
-            $name = substr($name, 0, 20);
+        // Limiter la longueur (en caracteres, pas en bytes pour UTF-8)
+        if (mb_strlen($name, 'UTF-8') > 20) {
+            $name = mb_substr($name, 0, 20, 'UTF-8');
         }
 
-        // Ne garder que alphanumériques, espaces, - et _
-        $name = preg_replace('/[^a-zA-Z0-9 _-]/', '', $name);
+        // Ne garder que alphanumeriques (avec accents), espaces, - et _
+        // \p{L} = toutes les lettres Unicode (avec accents)
+        // \p{N} = tous les chiffres Unicode
+        $name = preg_replace('/[^\p{L}\p{N} _-]/u', '', $name);
 
-        // Si vide après sanitisation, retourner un nom par défaut
+        // Si vide apres sanitisation, retourner un nom par defaut
         return empty($name) ? 'Player' : $name;
     }
 

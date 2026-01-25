@@ -10,12 +10,12 @@ class CreateScoreDto
     #[Assert\Length(
         min: 1,
         max: 50,
-        minMessage: "Le nom doit contenir au moins {{ limit }} caractère",
-        maxMessage: "Le nom ne peut pas dépasser {{ limit }} caractères"
+        minMessage: "Le nom doit contenir au moins {{ limit }} caractere",
+        maxMessage: "Le nom ne peut pas depasser {{ limit }} caracteres"
     )]
     #[Assert\Regex(
-        pattern: '/^[a-zA-Z0-9_\- ]+$/',
-        message: "Le nom ne peut contenir que des lettres, chiffres, espaces, tirets et underscores"
+        pattern: '/^[\p{L}\p{N}_\- ]+$/u',
+        message: "Le nom ne peut contenir que des lettres (avec accents), chiffres, espaces, tirets et underscores"
     )]
     public ?string $playerName = null;
 

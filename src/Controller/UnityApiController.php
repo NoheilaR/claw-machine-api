@@ -56,6 +56,11 @@ class UnityApiController extends AbstractController
             'blackoutTokenProbability' => $settings->getBlackoutTokenProbability(),
             'minBlackoutTokens' => $settings->getMinBlackoutTokens(),
             'maxBlackoutTokens' => $settings->getMaxBlackoutTokens(),
+            // Tokens - Stun
+            'stunTokenProbability' => $settings->getStunTokenProbability(),
+            'minStunTokens' => $settings->getMinStunTokens(),
+            'maxStunTokens' => $settings->getMaxStunTokens(),
+            'stunDuration' => $settings->getStunDuration(),
             // Plushies - Quantities
             'initialPlushieCount' => $settings->getInitialPlushieCount(),
             'minPlushiesBeforeRespawn' => $settings->getMinPlushiesBeforeRespawn(),

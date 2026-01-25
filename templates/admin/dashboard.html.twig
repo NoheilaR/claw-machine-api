@@ -64,11 +64,55 @@
             color: #ef4444;
         }
 
+        /* Quick Stats Banner */
+        .quick-stats-banner {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(236, 72, 153, 0.1));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 28px 36px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .quick-stat {
+            text-align: center;
+        }
+
+        .quick-stat-value {
+            font-size: 2.8em;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .quick-stat-value.highlight {
+            color: var(--purple);
+            text-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
+        }
+
+        .quick-stat-label {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        .quick-stat-divider {
+            width: 1px;
+            height: 60px;
+            background: rgba(139, 92, 246, 0.3);
+        }
+
         /* Stats Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
             margin-bottom: 40px;
         }
 
@@ -77,7 +121,7 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(139, 92, 246, 0.2);
             border-radius: 12px;
-            padding: 24px;
+            padding: 20px;
             transition: all 0.3s ease;
         }
 
@@ -87,19 +131,27 @@
             box-shadow: var(--glow-purple);
         }
 
+        .stat-card.highlight-card {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.1));
+            border-color: rgba(139, 92, 246, 0.4);
+        }
+
         .stat-label {
-            font-size: 0.85em;
+            font-size: 0.8em;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .stat-value {
-            font-size: 2em;
+            font-size: 1.8em;
             font-weight: 700;
             color: var(--purple);
         }
+
+        .stat-value.gold { color: #ffd700; }
+        .stat-value.green { color: #22c55e; }
 
         /* Main Grid */
         .main-grid {
@@ -365,6 +417,15 @@
         @media (max-width: 968px) {
             .main-grid { grid-template-columns: 1fr; }
             .admin-header { flex-direction: column; gap: 20px; }
+            .quick-stats-banner {
+                flex-direction: column;
+                padding: 24px 20px;
+            }
+            .quick-stat-divider {
+                width: 80px;
+                height: 1px;
+            }
+            .quick-stat-value { font-size: 2.2em; }
         }
     </style>
 
@@ -379,15 +440,34 @@
             </nav>
         </div>
 
-        <!-- Statistiques globales -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-label">Parties jouees</div>
-                <div class="stat-value">{{ globalStats.totalGames }}</div>
+        <!-- Banniere Stats principales -->
+        <div class="quick-stats-banner">
+            <div class="quick-stat">
+                <div class="quick-stat-value highlight">{{ globalStats.highestScore }}</div>
+                <div class="quick-stat-label">Record</div>
             </div>
-            <div class="stat-card">
+            <div class="quick-stat-divider"></div>
+            <div class="quick-stat">
+                <div class="quick-stat-value">{{ globalStats.totalGames }}</div>
+                <div class="quick-stat-label">Parties</div>
+            </div>
+            <div class="quick-stat-divider"></div>
+            <div class="quick-stat">
+                <div class="quick-stat-value">{{ globalStats.uniquePlayers }}</div>
+                <div class="quick-stat-label">Joueurs</div>
+            </div>
+            <div class="quick-stat-divider"></div>
+            <div class="quick-stat">
+                <div class="quick-stat-value">{{ todayStats.gamesToday }}</div>
+                <div class="quick-stat-label">Aujourd'hui</div>
+            </div>
+        </div>
+
+        <!-- Statistiques detaillees -->
+        <div class="stats-grid">
+            <div class="stat-card highlight-card">
                 <div class="stat-label">Meilleur score</div>
-                <div class="stat-value">{{ globalStats.highestScore }}</div>
+                <div class="stat-value gold">{{ globalStats.highestScore }}</div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Score moyen</div>
@@ -398,12 +478,16 @@
                 <div class="stat-value">{{ globalStats.averageDuration|number_format(1) }}s</div>
             </div>
             <div class="stat-card">
+                <div class="stat-label">Total parties</div>
+                <div class="stat-value">{{ globalStats.totalGames }}</div>
+            </div>
+            <div class="stat-card">
                 <div class="stat-label">Joueurs uniques</div>
                 <div class="stat-value">{{ globalStats.uniquePlayers }}</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card highlight-card">
                 <div class="stat-label">Parties aujourd'hui</div>
-                <div class="stat-value">{{ todayStats.gamesToday }}</div>
+                <div class="stat-value green">{{ todayStats.gamesToday }}</div>
             </div>
         </div>
 

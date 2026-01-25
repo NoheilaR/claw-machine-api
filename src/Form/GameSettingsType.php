@@ -19,139 +19,161 @@ class GameSettingsType extends AbstractType
             ->add('timeLimit', IntegerType::class, [
                 'label' => 'Temps limite (secondes)',
                 'attr' => [
-                    'min' => 30,
-                    'max' => 300,
                     'step' => 10,
                     'placeholder' => '60'
                 ],
-                'help' => 'Note : Le jeu utilise un système d\'énergie, ce paramètre est optionnel'
+                'help' => 'Recommande: 60-120s. Le jeu utilise un systeme d\'energie, ce parametre est optionnel'
             ])
 
             // ===== TOKENS - ENERGY =====
             ->add('energyTokenProbability', NumberType::class, [
-                'label' => 'Probabilité Energy Token (%)',
+                'label' => 'Probabilite Energy Token (%)',
                 'scale' => 1,
                 'attr' => [
-                    'min' => 0,
-                    'max' => 30,
                     'step' => 1,
                     'placeholder' => '10'
                 ],
-                'help' => 'Probabilité qu\'un energy token apparaisse au lieu d\'une peluche (0-30%)'
+                'help' => 'Recommande: 5-15%. Probabilite qu\'un energy token apparaisse'
             ])
             ->add('minEnergyTokens', IntegerType::class, [
                 'label' => 'Min Energy Tokens',
-                'attr' => ['min' => 0, 'max' => 5, 'step' => 1],
-                'help' => 'Nombre minimum d\'energy tokens garantis dans le bac'
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 1-3. Nombre minimum d\'energy tokens garantis'
             ])
             ->add('maxEnergyTokens', IntegerType::class, [
                 'label' => 'Max Energy Tokens',
-                'attr' => ['min' => 1, 'max' => 10, 'step' => 1],
-                'help' => 'Nombre maximum d\'energy tokens dans le bac'
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 3-6. Nombre maximum d\'energy tokens'
             ])
 
             // ===== TOKENS - BOMB =====
             ->add('bombTokenProbability', NumberType::class, [
-                'label' => 'Probabilité Bomb Token (%)',
+                'label' => 'Probabilite Bomb Token (%)',
                 'scale' => 1,
                 'attr' => [
-                    'min' => 0,
-                    'max' => 20,
                     'step' => 1,
                     'placeholder' => '5'
                 ],
-                'help' => 'Probabilité qu\'une bombe apparaisse (0-20%)'
+                'help' => 'Recommande: 3-10%. Probabilite qu\'une bombe apparaisse'
             ])
             ->add('minBombTokens', IntegerType::class, [
                 'label' => 'Min Bomb Tokens',
-                'attr' => ['min' => 0, 'max' => 3, 'step' => 1],
-                'help' => 'Nombre minimum de bombes (recommandé: 0)'
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 0. Nombre minimum de bombes'
             ])
             ->add('maxBombTokens', IntegerType::class, [
                 'label' => 'Max Bomb Tokens',
-                'attr' => ['min' => 0, 'max' => 5, 'step' => 1],
-                'help' => 'Nombre maximum de bombes dans le bac'
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 2-3. Nombre maximum de bombes'
             ])
 
             // ===== TOKENS - BLACKOUT =====
             ->add('blackoutTokenProbability', NumberType::class, [
-                'label' => 'Probabilité Blackout Token (%)',
+                'label' => 'Probabilite Blackout Token (%)',
                 'scale' => 1,
                 'attr' => [
-                    'min' => 0,
-                    'max' => 20,
                     'step' => 1,
                     'placeholder' => '3'
                 ],
-                'help' => 'Probabilité qu\'un blackout apparaisse (0-20%)'
+                'help' => 'Recommande: 2-5%. Probabilite qu\'un blackout apparaisse'
             ])
             ->add('minBlackoutTokens', IntegerType::class, [
                 'label' => 'Min Blackout Tokens',
-                'attr' => ['min' => 0, 'max' => 2, 'step' => 1],
-                'help' => 'Nombre minimum de blackouts (recommandé: 0)'
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 0. Nombre minimum de blackouts'
             ])
             ->add('maxBlackoutTokens', IntegerType::class, [
                 'label' => 'Max Blackout Tokens',
-                'attr' => ['min' => 0, 'max' => 3, 'step' => 1],
-                'help' => 'Nombre maximum de blackouts (recommandé: 1)'
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 1-2. Nombre maximum de blackouts'
+            ])
+
+            // ===== TOKENS - STUN =====
+            ->add('stunTokenProbability', NumberType::class, [
+                'label' => 'Probabilite Stun Token (%)',
+                'scale' => 1,
+                'attr' => [
+                    'step' => 1,
+                    'placeholder' => '5'
+                ],
+                'help' => 'Recommande: 3-8%. Probabilite qu\'un stun apparaisse'
+            ])
+            ->add('minStunTokens', IntegerType::class, [
+                'label' => 'Min Stun Tokens',
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 0. Nombre minimum de stuns'
+            ])
+            ->add('maxStunTokens', IntegerType::class, [
+                'label' => 'Max Stun Tokens',
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 1-3. Nombre maximum de stuns'
+            ])
+            ->add('stunDuration', NumberType::class, [
+                'label' => 'Duree du Stun (secondes)',
+                'scale' => 1,
+                'attr' => [
+                    'step' => 0.5,
+                    'placeholder' => '2'
+                ],
+                'help' => 'Recommande: 1.5-3s. Duree d\'immobilisation du joueur'
             ])
 
             // ===== PELUCHES - QUANTITÉS =====
             ->add('initialPlushieCount', IntegerType::class, [
                 'label' => 'Peluches initiales',
-                'attr' => ['min' => 5, 'max' => 30, 'step' => 1],
-                'help' => 'Nombre de peluches au démarrage du jeu'
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 10-20. Nombre de peluches au demarrage'
             ])
             ->add('minPlushiesBeforeRespawn', IntegerType::class, [
                 'label' => 'Seuil de respawn',
-                'attr' => ['min' => 1, 'max' => 10, 'step' => 1],
-                'help' => 'Nombre minimum avant de respawner des peluches'
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 3-5. Nombre minimum avant respawn'
             ])
             ->add('maxPlushiesInBin', IntegerType::class, [
                 'label' => 'Max peluches dans le bac',
-                'attr' => ['min' => 10, 'max' => 50, 'step' => 1],
-                'help' => 'Nombre maximum de peluches dans le bac'
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 20-30. Nombre maximum dans le bac'
             ])
             ->add('plushiesPerSpawn', IntegerType::class, [
                 'label' => 'Peluches par vague',
-                'attr' => ['min' => 1, 'max' => 15, 'step' => 1],
-                'help' => 'Nombre de peluches spawnées par vague de respawn'
+                'attr' => ['step' => 1],
+                'help' => 'Recommande: 3-8. Peluches spawnees par vague'
             ])
 
             // ===== PELUCHES - RARETÉS =====
             ->add('commonProbability', NumberType::class, [
-                'label' => 'Probabilité Common (%)',
+                'label' => 'Probabilite Common (%)',
                 'scale' => 1,
-                'attr' => ['min' => 0, 'max' => 100, 'step' => 5],
-                'help' => 'Probabilité peluche commune (total doit = 100%)'
+                'attr' => ['step' => 5],
+                'help' => 'Recommande: 70-80%. Total common+rare doit = 100%'
             ])
             ->add('rareProbability', NumberType::class, [
-                'label' => 'Probabilité Rare (%)',
+                'label' => 'Probabilite Rare (%)',
                 'scale' => 1,
-                'attr' => ['min' => 0, 'max' => 100, 'step' => 5],
-                'help' => 'Probabilité peluche rare'
+                'attr' => ['step' => 5],
+                'help' => 'Recommande: 20-30%. Probabilite peluche rare'
             ])
             // ===== PERTURBATION COMMANDES (GLITCH) =====
             ->add('glitchProbability', NumberType::class, [
-                'label' => 'Probabilité inversion commandes (%)',
+                'label' => 'Probabilite inversion commandes (%)',
                 'scale' => 1,
-                'attr' => ['min' => 0, 'max' => 100, 'step' => 5],
-                'help' => 'Probabilité que les commandes s\'inversent quand l\'énergie est basse (0-100%)'
+                'attr' => ['step' => 5],
+                'help' => 'Recommande: 30-50%. Probabilite que les commandes s\'inversent quand energie basse'
             ])
             ->add('glitchEnergyThreshold', NumberType::class, [
-                'label' => 'Seuil énergie pour glitch (%)',
+                'label' => 'Seuil energie pour glitch (%)',
                 'scale' => 1,
-                'attr' => ['min' => 0, 'max' => 50, 'step' => 5],
-                'help' => 'Seuil d\'énergie en dessous duquel le glitch peut s\'activer (0-50%)'
+                'attr' => ['step' => 5],
+                'help' => 'Recommande: 20-30%. Seuil d\'energie pour activer le glitch'
             ])
             ->add('glitchChangeInterval', NumberType::class, [
                 'label' => 'Intervalle changement glitch (s)',
                 'scale' => 1,
-                'attr' => ['min' => 1, 'max' => 10, 'step' => 0.5],
-                'help' => 'Intervalle en secondes entre chaque changement d\'état du glitch'
+                'attr' => ['step' => 0.5],
+                'help' => 'Recommande: 2-5s. Intervalle entre chaque changement de glitch'
             ])
 
-            ->add('save', SubmitType::class, ['label' => 'Sauvegarder les paramètres']);
+            ->add('save', SubmitType::class, ['label' => 'Sauvegarder les parametres']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
