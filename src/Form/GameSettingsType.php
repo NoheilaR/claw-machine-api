@@ -15,16 +15,6 @@ class GameSettingsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            // ===== GÉNÉRAL =====
-            ->add('timeLimit', IntegerType::class, [
-                'label' => 'Temps limite (secondes)',
-                'attr' => [
-                    'step' => 10,
-                    'placeholder' => '60'
-                ],
-                'help' => 'Recommande: 60-120s. Le jeu utilise un systeme d\'energie, ce parametre est optionnel'
-            ])
-
             // ===== TOKENS - ENERGY =====
             ->add('energyTokenProbability', NumberType::class, [
                 'label' => 'Probabilite Energy Token (%)',

@@ -28,6 +28,7 @@
             display: flex;
             gap: 12px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .nav-link {
@@ -38,6 +39,7 @@
             font-weight: 500;
             transition: all 0.3s ease;
             border: 1px solid transparent;
+            white-space: nowrap;
         }
 
         .nav-link:hover {
@@ -94,6 +96,11 @@
             text-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
         }
 
+        .quick-stat-value.green {
+            color: #22c55e;
+            text-shadow: 0 0 30px rgba(34, 197, 94, 0.5);
+        }
+
         .quick-stat-label {
             font-size: 0.9em;
             color: var(--text-secondary);
@@ -107,51 +114,6 @@
             height: 60px;
             background: rgba(139, 92, 246, 0.3);
         }
-
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 12px;
-            padding: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(139, 92, 246, 0.4);
-            box-shadow: var(--glow-purple);
-        }
-
-        .stat-card.highlight-card {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.1));
-            border-color: rgba(139, 92, 246, 0.4);
-        }
-
-        .stat-label {
-            font-size: 0.8em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
-        }
-
-        .stat-value {
-            font-size: 1.8em;
-            font-weight: 700;
-            color: var(--purple);
-        }
-
-        .stat-value.gold { color: #ffd700; }
-        .stat-value.green { color: #22c55e; }
 
         /* Main Grid */
         .main-grid {
@@ -448,6 +410,11 @@
             </div>
             <div class="quick-stat-divider"></div>
             <div class="quick-stat">
+                <div class="quick-stat-value">{{ globalStats.averageScore|number_format(0) }}</div>
+                <div class="quick-stat-label">Score moyen</div>
+            </div>
+            <div class="quick-stat-divider"></div>
+            <div class="quick-stat">
                 <div class="quick-stat-value">{{ globalStats.totalGames }}</div>
                 <div class="quick-stat-label">Parties</div>
             </div>
@@ -458,36 +425,8 @@
             </div>
             <div class="quick-stat-divider"></div>
             <div class="quick-stat">
-                <div class="quick-stat-value">{{ todayStats.gamesToday }}</div>
+                <div class="quick-stat-value green">{{ todayStats.gamesToday }}</div>
                 <div class="quick-stat-label">Aujourd'hui</div>
-            </div>
-        </div>
-
-        <!-- Statistiques detaillees -->
-        <div class="stats-grid">
-            <div class="stat-card highlight-card">
-                <div class="stat-label">Meilleur score</div>
-                <div class="stat-value gold">{{ globalStats.highestScore }}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Score moyen</div>
-                <div class="stat-value">{{ globalStats.averageScore|number_format(0) }}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Duree moyenne</div>
-                <div class="stat-value">{{ globalStats.averageDuration|number_format(1) }}s</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Total parties</div>
-                <div class="stat-value">{{ globalStats.totalGames }}</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-label">Joueurs uniques</div>
-                <div class="stat-value">{{ globalStats.uniquePlayers }}</div>
-            </div>
-            <div class="stat-card highlight-card">
-                <div class="stat-label">Parties aujourd'hui</div>
-                <div class="stat-value green">{{ todayStats.gamesToday }}</div>
             </div>
         </div>
 

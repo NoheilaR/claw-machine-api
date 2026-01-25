@@ -4,7 +4,7 @@
 {% block body %}
     <style>
         .container {
-            max-width: 900px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 40px 20px;
         }
@@ -17,14 +17,18 @@
         }
 
         .admin-header h1 {
-            font-size: 2em;
+            font-size: 2.5em;
             font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .admin-nav {
             display: flex;
             gap: 12px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .nav-link {
@@ -35,6 +39,7 @@
             font-weight: 500;
             transition: all 0.3s ease;
             border: 1px solid transparent;
+            white-space: nowrap;
         }
 
         .nav-link:hover {
@@ -52,6 +57,12 @@
         .logout-btn {
             background: rgba(239, 68, 68, 0.1);
             border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
             color: #ef4444;
         }
 
@@ -184,20 +195,6 @@
             {% endfor %}
 
             {{ form_start(form) }}
-
-            {# GENERAL #}
-            <div class="section-header">
-                <h3>General</h3>
-                <p class="section-desc">Parametres globaux de la partie</p>
-            </div>
-            <div class="form-grid">
-                <div class="form-row">
-                    {{ form_label(form.timeLimit) }}
-                    <span class="current-value">{{ settings.timeLimit }}s</span>
-                    {{ form_widget(form.timeLimit) }}
-                    {{ form_help(form.timeLimit) }}
-                </div>
-            </div>
 
             {# ENERGY TOKENS #}
             <div class="section-header">
