@@ -9,6 +9,56 @@
             padding: 40px 20px;
         }
 
+        .top-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .top-nav-link {
+            padding: 10px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            line-height: 1;
+        }
+
+        .top-nav-link:hover {
+            color: var(--text-primary);
+            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .top-nav-link.active {
+            color: var(--purple);
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(139, 92, 246, 0.15);
+        }
+
+        .top-nav-link.admin-link {
+            color: var(--purple);
+            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.05);
+        }
+
+        .top-nav-link.admin-link:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: var(--purple);
+        }
+
         .page-header {
             text-align: center;
             margin-bottom: 40px;
@@ -213,6 +263,12 @@
     </style>
 
     <div class="container">
+        <nav class="top-nav">
+            <a href="{{ path('home') }}" class="top-nav-link">Accueil</a>
+            <a href="{{ path('leaderboard') }}" class="top-nav-link active">Classement</a>
+            <a href="{{ path('admin_dashboard') }}" class="top-nav-link admin-link">Admin</a>
+        </nav>
+
         <div class="page-header">
             <h1 class="title-overload">OVERLOAD</h1>
             <p>Classement des meilleurs joueurs</p>

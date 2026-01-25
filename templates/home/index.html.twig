@@ -127,54 +127,43 @@
 
         .nav-links {
             display: flex;
-            gap: 32px;
+            gap: 8px;
+            align-items: center;
         }
 
         .nav-links a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.85em;
+            font-size: 0.8em;
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 1px;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--purple);
-            transition: width 0.3s ease;
+            transition: all 0.3s ease;
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            line-height: 1;
         }
 
         .nav-links a:hover {
-            color: var(--purple);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
+            color: var(--text-primary);
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.2);
         }
 
         .nav-links a.admin-link {
             color: var(--purple);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            padding: 8px 16px;
-            border-radius: 6px;
-            margin-left: 8px;
+            border-color: rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.05);
         }
 
         .nav-links a.admin-link:hover {
             background: rgba(139, 92, 246, 0.15);
             border-color: var(--purple);
-        }
-
-        .nav-links a.admin-link::after {
-            display: none;
         }
 
         /* Hero Section */
@@ -921,7 +910,7 @@
             <a href="#features">Gameplay</a>
             <a href="#tokens">Tokens</a>
             <a href="#howto">Regles</a>
-            <a href="#leaderboard">Scores</a>
+            <a href="{{ path('leaderboard') }}">Classement</a>
             <a href="{{ path('admin_dashboard') }}" class="admin-link">Admin</a>
         </div>
     </nav>
