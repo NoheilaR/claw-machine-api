@@ -1,0 +1,246 @@
+{% extends 'base.html.twig' %}
+{% block title %}OVERLOAD - Le jeu d'arcade{% endblock %}
+
+{% block body %}
+    <style>
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 10;
+        }
+
+        /* Title with glitch effect */
+        .main-title {
+            font-size: 5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899, #8b5cf6);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .main-title::before,
+        .main-title::after {
+            content: 'OVERLOAD';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0.8;
+        }
+
+        .main-title::before {
+            animation: glitch-1 2.5s infinite;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        }
+
+        .main-title::after {
+            animation: glitch-2 2.5s infinite;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        }
+
+        @keyframes glitch-1 {
+            0%, 90%, 100% { transform: translate(0); }
+            92% { transform: translate(-3px, 1px); }
+            94% { transform: translate(3px, -1px); }
+            96% { transform: translate(-2px, 0); }
+        }
+
+        @keyframes glitch-2 {
+            0%, 90%, 100% { transform: translate(0); }
+            91% { transform: translate(2px, 1px); }
+            93% { transform: translate(-3px, 0); }
+            95% { transform: translate(2px, -1px); }
+        }
+
+        .tagline {
+            font-size: 1.4em;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .tagline strong {
+            color: var(--purple);
+        }
+
+        /* Machine image */
+        .machine-container {
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .machine-img {
+            max-width: 400px;
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.3));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* CTA Button */
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.2));
+            border: 2px solid rgba(139, 92, 246, 0.6);
+            border-radius: 12px;
+            padding: 18px 40px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .cta-btn:hover {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.5), rgba(236, 72, 153, 0.3));
+            border-color: var(--purple);
+            box-shadow: var(--glow-purple), 0 0 40px rgba(139, 92, 246, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .cta-btn .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .cta-btn:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        /* How to play section */
+        .how-to-play {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, transparent, rgba(139, 92, 246, 0.05));
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 50px;
+            color: var(--text-primary);
+        }
+
+        .tuto-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tuto-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.15);
+        }
+
+        /* Scroll indicator */
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+            font-size: 0.85em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-hint .chevron {
+            font-size: 1.5em;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 3em;
+            }
+
+            .tagline {
+                font-size: 1.1em;
+            }
+
+            .machine-img {
+                max-width: 280px;
+            }
+
+            .section-title {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="main-title">OVERLOAD</h1>
+            <p class="tagline">
+                Controle la pince, attrape les peluches,<br>
+                gere ton <strong>energie</strong> et deviens le <strong>meilleur</strong>.
+            </p>
+
+            <div class="machine-container">
+                <img src="{{ asset('images/machine.png') }}" alt="Machine OVERLOAD" class="machine-img">
+            </div>
+
+            <a href="{{ path('leaderboard') }}" class="cta-btn">
+                Voir le classement
+                <span class="arrow">→</span>
+            </a>
+        </div>
+
+        <div class="scroll-hint">
+            <span>Comment jouer</span>
+            <span class="chevron">↓</span>
+        </div>
+    </section>
+
+    <!-- How to play -->
+    <section class="how-to-play">
+        <h2 class="section-title">Comment jouer ?</h2>
+        <div class="tuto-container">
+            <img src="{{ asset('images/tuto.png') }}" alt="Tutoriel OVERLOAD" class="tuto-img">
+        </div>
+    </section>
+{% endblock %}

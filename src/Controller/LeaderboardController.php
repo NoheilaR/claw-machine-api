@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class LeaderboardController extends AbstractController
 {
-    #[Route('/', name: 'leaderboard')]
+    #[Route('/classement', name: 'leaderboard')]
     public function index(Request $request, ScoreRepository $scoreRepository): Response
     {
         $period = $request->query->get('period', 'all');
