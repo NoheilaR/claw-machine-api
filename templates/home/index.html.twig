@@ -213,9 +213,6 @@
             margin-bottom: 28px;
         }
 
-        .hero-tag .icon {
-            font-size: 1.2em;
-        }
 
         .hero-title {
             font-family: 'Excelorate', sans-serif;
@@ -223,17 +220,9 @@
             font-weight: 400;
             line-height: 1;
             margin-bottom: 28px;
-            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #8b5cf6 100%);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient-flow 4s ease infinite;
+            color: #ffffff;
             letter-spacing: 4px;
-        }
-
-        @keyframes gradient-flow {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            text-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
         }
 
         .hero-subtitle {
@@ -382,7 +371,7 @@
             line-height: 1.8;
         }
 
-        /* Features */
+        /* Features - Bento Grid */
         .features {
             background: linear-gradient(180deg, transparent 0%, rgba(139, 92, 246, 0.05) 50%, transparent 100%);
             padding: 120px 40px;
@@ -390,51 +379,54 @@
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            grid-template-columns: 1.2fr 0.8fr;
+            grid-template-rows: auto auto;
+            gap: 24px;
         }
 
         .feature-card {
             background: rgba(15, 15, 25, 0.8);
-            border: 1px solid rgba(139, 92, 246, 0.15);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 45px 35px;
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--purple), #ec4899);
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
+        .feature-card:first-child {
+            grid-row: span 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .feature-card:first-child .feature-icon {
+            width: 100px;
+            height: 100px;
+        }
+
+        .feature-card:first-child .feature-title {
+            font-size: 1.8em;
+        }
+
+        .feature-card:first-child .feature-desc {
+            font-size: 1.1em;
         }
 
         .feature-card:hover {
-            border-color: rgba(139, 92, 246, 0.4);
             transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
         }
 
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
-
         .feature-icon {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             margin-bottom: 25px;
             filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
         }
 
         .feature-title {
-            font-size: 1.4em;
+            font-size: 1.3em;
             font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 15px;
@@ -451,34 +443,48 @@
         /* Tokens section */
         .tokens-section {
             background: rgba(139, 92, 246, 0.03);
-            border-top: 1px solid rgba(139, 92, 246, 0.1);
-            border-bottom: 1px solid rgba(139, 92, 246, 0.1);
         }
 
         .tokens-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
             margin-top: 60px;
+            flex-wrap: wrap;
         }
 
         .token-item {
             text-align: center;
-            padding: 40px 30px;
+            padding: 35px 40px;
             background: rgba(15, 15, 25, 0.6);
-            border-radius: 20px;
-            border: 1px solid rgba(139, 92, 246, 0.1);
+            border-radius: 24px;
             transition: all 0.3s ease;
+            flex: 0 1 280px;
+        }
+
+        .token-item:nth-child(1) {
+            transform: translateY(0);
+        }
+
+        .token-item:nth-child(2) {
+            transform: translateY(40px);
+        }
+
+        .token-item:nth-child(3) {
+            transform: translateY(-20px);
         }
 
         .token-item:hover {
-            transform: scale(1.05);
-            border-color: rgba(139, 92, 246, 0.3);
+            transform: scale(1.05) translateY(var(--hover-offset, 0));
         }
 
+        .token-item:nth-child(1):hover { --hover-offset: -10px; transform: scale(1.05) translateY(-10px); }
+        .token-item:nth-child(2):hover { --hover-offset: 30px; transform: scale(1.05) translateY(30px); }
+        .token-item:nth-child(3):hover { --hover-offset: -30px; transform: scale(1.05) translateY(-30px); }
+
         .token-img {
-            width: 100px;
-            height: 100px;
+            width: 90px;
+            height: 90px;
             margin-bottom: 20px;
             filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.6));
             animation: token-pulse 3s ease-in-out infinite;
@@ -486,10 +492,12 @@
 
         .token-item:nth-child(2) .token-img {
             animation-delay: -1s;
+            filter: drop-shadow(0 0 25px rgba(239, 68, 68, 0.6));
         }
 
         .token-item:nth-child(3) .token-img {
             animation-delay: -2s;
+            filter: drop-shadow(0 0 25px rgba(245, 158, 11, 0.6));
         }
 
         @keyframes token-pulse {
@@ -572,12 +580,52 @@
             text-align: center;
         }
 
-        .plushies-row {
+        .plushies-categories {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 60px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .plush-category {
+            background: rgba(15, 15, 25, 0.6);
+            border-radius: 24px;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plush-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--purple), #a78bfa);
+        }
+
+        .plush-category.rare::before {
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+        }
+
+        .category-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+        }
+
+        .plush-variants {
             display: flex;
             justify-content: center;
-            gap: 60px;
-            margin-top: 60px;
-            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 20px;
         }
 
         .plush-item {
@@ -589,27 +637,44 @@
             transform: translateY(-10px);
         }
 
+        .plush-item.glowy .plush-img {
+            filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.8)) brightness(1.3);
+        }
+
+        .plush-category.rare .plush-item.glowy .plush-img {
+            filter: drop-shadow(0 0 40px rgba(251, 191, 36, 0.8)) brightness(1.3);
+        }
+
         .plush-img {
-            width: 120px;
-            height: 120px;
-            filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5));
+            width: 90px;
+            height: 90px;
+            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.4));
             animation: plush-bounce 4s ease-in-out infinite;
         }
 
-        .plush-item:nth-child(2) .plush-img { animation-delay: -1s; }
-        .plush-item:nth-child(3) .plush-img { animation-delay: -2s; }
-        .plush-item:nth-child(4) .plush-img { animation-delay: -3s; }
+        .plush-item:nth-child(2) .plush-img { animation-delay: -2s; }
 
         @keyframes plush-bounce {
             0%, 100% { transform: translateY(0) rotate(-3deg); }
-            50% { transform: translateY(-15px) rotate(3deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
+        }
+
+        .plush-label {
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .plush-points {
-            margin-top: 15px;
             font-weight: 700;
             color: var(--purple);
-            font-size: 1.1em;
+            font-size: 1.4em;
+        }
+
+        .plush-category.rare .plush-points {
+            color: #fbbf24;
         }
 
         /* Leaderboard preview */
@@ -765,7 +830,23 @@
             .hero-title { font-size: 4em; }
             .hero-stats { justify-content: center; }
 
-            .features-grid, .tokens-grid {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card:first-child {
+                grid-row: auto;
+            }
+
+            .tokens-grid .token-item {
+                transform: translateY(0) !important;
+            }
+
+            .tokens-grid .token-item:hover {
+                transform: scale(1.05) translateY(-10px) !important;
+            }
+
+            .plushies-categories {
                 grid-template-columns: 1fr;
             }
 
@@ -786,8 +867,9 @@
             .hero-cta { flex-direction: column; }
             .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
             .floating-plushies { display: none; }
-            .plushies-row { gap: 30px; }
-            .plush-img { width: 80px; height: 80px; }
+            .plush-variants { gap: 20px; }
+            .plush-img { width: 70px; height: 70px; }
+            .plush-category { padding: 30px 20px; }
         }
     </style>
 
@@ -811,7 +893,7 @@
         <div class="nav-links">
             <a href="#features">Gameplay</a>
             <a href="#tokens">Tokens</a>
-            <a href="#howto">Regles</a>
+            <a href="#howto">Règles</a>
             <a href="#leaderboard">Scores</a>
         </div>
     </nav>
@@ -820,20 +902,20 @@
     <section class="hero">
         <div class="hero-grid">
             <div class="hero-content fade-in">
-                <span class="hero-tag"><span class="icon">🕹️</span> Arcade Experience</span>
+                <span class="hero-tag">Arcade Experience</span>
                 <h1 class="hero-title">OVERLOAD</h1>
-                <p class="hero-subtitle">Attrape. Survis. Domine.</p>
+                <p class="hero-subtitle">Attrape. Survis. Triomphe.</p>
                 <p class="hero-desc">
-                    Plonge dans l'arene et prends le controle de la pince magnetique.
-                    Chaque peluche compte, chaque seconde est precieuse.
-                    Gere ton energie, evite les pieges et inscris ton nom dans la legende.
+                    Plonge dans l'arène et prends le contrôle de la pince magnétique.
+                    Chaque peluche compte, chaque seconde est précieuse.
+                    Gère ton énergie, évite les pièges et inscris ton nom dans la légende.
                 </p>
                 <div class="hero-cta">
                     <a href="{{ path('leaderboard') }}" class="btn-primary">
                         Voir les scores →
                     </a>
                     <a href="#howto" class="btn-secondary">
-                        Decouvrir le jeu
+                        Découvrir le jeu
                     </a>
                 </div>
                 <div class="hero-stats">
@@ -863,33 +945,33 @@
             <span class="section-tag">// Le concept</span>
             <h2 class="section-title">Un gameplay nerveux</h2>
             <p class="section-desc">
-                Chaque partie est une course contre la montre. Ta jauge d'energie se vide,
-                a toi de la maintenir tout en scorant un max.
+                Chaque partie est une course contre la montre. Ta jauge d'énergie se vide,
+                à toi de la maintenir tout en scorant un max.
             </p>
         </div>
         <div class="features-grid">
             <div class="feature-card fade-in">
-                <img src="{{ asset('images/energy_icon.png') }}" class="feature-icon" alt="Energie">
-                <h3 class="feature-title">Energie vitale</h3>
+                <img src="{{ asset('images/energy_icon.png') }}" class="feature-icon" alt="Énergie">
+                <h3 class="feature-title">Énergie vitale</h3>
                 <p class="feature-desc">
-                    Ta jauge baisse en permanence. Quand elle atteint zero, c'est game over.
-                    Attrape les tokens energie pour rester en vie.
+                    Ta jauge baisse en permanence. Quand elle atteint zéro, c'est game over.
+                    Attrape les tokens énergie pour rester en vie.
                 </p>
             </div>
             <div class="feature-card fade-in">
                 <img src="{{ asset('images/jeton_bomb.png') }}" class="feature-icon" alt="Danger">
-                <h3 class="feature-title">Pieges mortels</h3>
+                <h3 class="feature-title">Pièges mortels</h3>
                 <p class="feature-desc">
-                    Les bombes te font perdre des points. Les blackouts inversent tes commandes.
-                    Reste concentre ou paie le prix.
+                    Les bombes détruisent des peluches pour accélérer tes points. Les blackouts réduisent ta vision mais doublent tes points.
+                    Reste concentré et exploite ces effets.
                 </p>
             </div>
             <div class="feature-card fade-in">
                 <img src="{{ asset('images/plush_ghost.png') }}" class="feature-icon" alt="Score">
-                <h3 class="feature-title">Scoring strategic</h3>
+                <h3 class="feature-title">Scoring stratégique</h3>
                 <p class="feature-desc">
-                    Toutes les peluches ne se valent pas. Les rares rapportent gros.
-                    A toi de choisir: quantite ou qualite ?
+                    Deux types de peluches : communes (15 pts) et rares (30 pts).
+                    À toi de choisir : quantité ou qualité ?
                 </p>
             </div>
         </div>
@@ -899,26 +981,26 @@
     <section class="tokens-section" id="tokens">
         <div class="section-header fade-in">
             <span class="section-tag">// Les tokens</span>
-            <h2 class="section-title">Maitrise les elements</h2>
+            <h2 class="section-title">Maîtrise les éléments</h2>
             <p class="section-desc">
-                Trois types de tokens peuvent changer le cours de ta partie. Apprends a les reconnaitre.
+                Trois types de tokens peuvent changer le cours de ta partie. Apprends à les reconnaître.
             </p>
         </div>
         <div class="tokens-grid">
             <div class="token-item slide-left">
-                <img src="{{ asset('images/jeton_energy.png') }}" class="token-img" alt="Token Energie">
-                <div class="token-name">Energie</div>
+                <img src="{{ asset('images/jeton_energy.png') }}" class="token-img" alt="Token Énergie">
+                <div class="token-name">Énergie</div>
                 <div class="token-effect good">+ Recharge ta jauge</div>
             </div>
             <div class="token-item fade-in">
                 <img src="{{ asset('images/jeton_bomb.png') }}" class="token-img" alt="Token Bombe">
                 <div class="token-name">Bombe</div>
-                <div class="token-effect bad">- Perte de points</div>
+                <div class="token-effect bad">Détruit des peluches = points plus rapides</div>
             </div>
             <div class="token-item slide-right">
                 <img src="{{ asset('images/jeton_blackout.png') }}" class="token-img" alt="Token Blackout">
                 <div class="token-name">Blackout</div>
-                <div class="token-effect neutral">⚡ Commandes inversees</div>
+                <div class="token-effect neutral">Vision réduite + points x2</div>
             </div>
         </div>
     </section>
@@ -929,22 +1011,34 @@
             <span class="section-tag">// Les peluches</span>
             <h2 class="section-title">Attrape-les toutes</h2>
         </div>
-        <div class="plushies-row fade-in">
-            <div class="plush-item">
-                <img src="{{ asset('images/plush_bunny.png') }}" class="plush-img" alt="Bunny">
-                <div class="plush-points">+50 pts</div>
+        <div class="plushies-categories fade-in">
+            <div class="plush-category">
+                <h3 class="category-title">Communes</h3>
+                <div class="plush-variants">
+                    <div class="plush-item">
+                        <img src="{{ asset('images/plush_blob.png') }}" class="plush-img" alt="Commune">
+                        <div class="plush-label">Normale</div>
+                    </div>
+                    <div class="plush-item glowy">
+                        <img src="{{ asset('images/plush_blob_glow.png') }}" class="plush-img" alt="Commune Glowy">
+                        <div class="plush-label">Glowy</div>
+                    </div>
+                </div>
+                <div class="plush-points">+15 pts</div>
             </div>
-            <div class="plush-item">
-                <img src="{{ asset('images/plush_ducky.png') }}" class="plush-img" alt="Ducky">
-                <div class="plush-points">+100 pts</div>
-            </div>
-            <div class="plush-item">
-                <img src="{{ asset('images/plush_ghost.png') }}" class="plush-img" alt="Ghost">
-                <div class="plush-points">+150 pts</div>
-            </div>
-            <div class="plush-item">
-                <img src="{{ asset('images/plush_monster.png') }}" class="plush-img" alt="Monster">
-                <div class="plush-points">+200 pts</div>
+            <div class="plush-category rare">
+                <h3 class="category-title">Rares</h3>
+                <div class="plush-variants">
+                    <div class="plush-item">
+                        <img src="{{ asset('images/plush_ducky.png') }}" class="plush-img" alt="Rare">
+                        <div class="plush-label">Normale</div>
+                    </div>
+                    <div class="plush-item glowy">
+                        <img src="{{ asset('images/plush_ducky_glow.png') }}" class="plush-img" alt="Rare Glowy">
+                        <div class="plush-label">Glowy</div>
+                    </div>
+                </div>
+                <div class="plush-points">+30 pts</div>
             </div>
         </div>
     </section>
@@ -953,12 +1047,12 @@
     <section id="howto">
         <div class="howto">
             <div class="howto-content slide-left">
-                <span class="section-tag">// Les regles</span>
+                <span class="section-tag">// Les règles</span>
                 <h2 class="section-title">Comment jouer</h2>
                 <ul class="howto-list">
                     <li>
                         <span class="num">01</span>
-                        <span>Utilise le <strong>joystick</strong> pour deplacer la pince au-dessus de ta cible</span>
+                        <span>Utilise le <strong>joystick</strong> pour déplacer la pince au-dessus de ta cible</span>
                     </li>
                     <li>
                         <span class="num">02</span>
@@ -966,11 +1060,11 @@
                     </li>
                     <li>
                         <span class="num">03</span>
-                        <span>Ramene les peluches dans ta <strong>zone de depot</strong> pour scorer</span>
+                        <span>Ramène les peluches dans ta <strong>zone de dépôt</strong> pour scorer</span>
                     </li>
                     <li>
                         <span class="num">04</span>
-                        <span>Surveille ta <strong>jauge d'energie</strong> - a zero, c'est termine</span>
+                        <span>Surveille ta <strong>jauge d'énergie</strong> - à zéro, c'est terminé</span>
                     </li>
                 </ul>
             </div>
@@ -984,7 +1078,7 @@
     <section class="leaderboard-section" id="leaderboard">
         <div class="section-header fade-in">
             <span class="section-tag">// Les meilleurs</span>
-            <h2 class="section-title">Qui domine ?</h2>
+            <h2 class="section-title">Le classement</h2>
         </div>
         <div class="leaderboard-preview fade-in">
             <div class="lb-header">
