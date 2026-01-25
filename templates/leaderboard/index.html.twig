@@ -68,9 +68,7 @@
             font-size: 3em;
             font-weight: 700;
             margin-bottom: 12px;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
         }
 
         .page-header p {
@@ -213,39 +211,6 @@
             margin-bottom: 8px;
         }
 
-        /* Top navbar */
-        .top-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            left: 0;
-        }
-
-        .nav-link {
-            background: rgba(15, 15, 25, 0.8);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: 10px;
-            padding: 10px 18px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-link:hover {
-            border-color: var(--purple);
-            color: var(--text-primary);
-            background: rgba(139, 92, 246, 0.15);
-        }
-
         @media (max-width: 640px) {
             .leaderboard-row {
                 grid-template-columns: 50px 1fr 80px;
@@ -290,19 +255,19 @@
             </div>
         </div>
 
-        <!-- Filtres par période -->
+        <!-- Filtres par periode -->
         <div class="filters">
             <a href="{{ path('leaderboard', {period: 'today'}) }}" class="filter-btn {{ period == 'today' ? 'active' : '' }}">
                 Aujourd'hui
             </a>
             <a href="{{ path('leaderboard', {period: 'week'}) }}" class="filter-btn {{ period == 'week' ? 'active' : '' }}">
-                Cette semaine
+                Semaine
             </a>
             <a href="{{ path('leaderboard', {period: 'month'}) }}" class="filter-btn {{ period == 'month' ? 'active' : '' }}">
-                Ce mois
+                Mois
             </a>
             <a href="{{ path('leaderboard', {period: 'all'}) }}" class="filter-btn {{ period == 'all' ? 'active' : '' }}">
-                Tout temps
+                All-time
             </a>
         </div>
 
@@ -337,23 +302,13 @@
             {% else %}
                 <div class="empty-state">
                     <p>Aucun score pour cette periode</p>
-                    <p style="font-size: 0.9em;">Jouez une partie pour apparaitre ici !</p>
+                    <p style="font-size: 0.9em;">Joue une partie pour apparaitre ici !</p>
                 </div>
             {% endif %}
         </div>
 
         <footer style="text-align: center; margin-top: 40px; color: var(--text-muted); font-size: 0.85em;">
-            © {{ "now"|date("Y") }} OVERLOAD
+            OVERLOAD {{ "now"|date("Y") }}
         </footer>
     </div>
-
-    <!-- Navigation en haut -->
-    <nav class="top-nav">
-        <a href="{{ path('home') }}" class="nav-link">
-            ← Retour
-        </a>
-        <a href="{{ path('app_login') }}" class="nav-link">
-            Admin
-        </a>
-    </nav>
 {% endblock %}
